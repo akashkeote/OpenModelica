@@ -214,8 +214,8 @@ def apply_premium_stylesheet(app):
     QWidget {
         background-color: #f8f9fa; /* Very light gray */
         color: #1f2937; /* Dark slate */
-        font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
-        font-size: 13px;
+        font-family: 'Space Grotesk', 'DotGothic16', 'Segoe UI', system-ui, sans-serif;
+        font-size: 14px;
     }
 
     /* Labels */
@@ -224,11 +224,12 @@ def apply_premium_stylesheet(app):
     }
     
     QLabel#headerTitle {
-        font-size: 20px;
+        font-family: 'DotGothic16', 'Space Grotesk', 'Segoe UI', sans-serif;
+        font-size: 22px;
         font-weight: 600;
         color: #111827; /* Very dark slate */
         margin-bottom: 15px;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
     }
 
     QLabel#statusLabel {
