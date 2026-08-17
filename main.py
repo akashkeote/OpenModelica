@@ -76,7 +76,7 @@ class OpenModelicaRunnerApp(QWidget):
         config_group.setLayout(config_layout)
 
         # 4. Run Button
-        self.run_btn = QPushButton("🚀 Run Simulation")
+        self.run_btn = QPushButton("Run Simulation")
         self.run_btn.setObjectName("runBtn")
         self.run_btn.setMinimumHeight(45)
         self.run_btn.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -160,9 +160,9 @@ class OpenModelicaRunnerApp(QWidget):
 
         # Disable button while running
         self.run_btn.setEnabled(False)
-        self.run_btn.setText("⏳ Running...")
+        self.run_btn.setText("Running...")
         self.status_label.setText("Executing simulation in background...")
-        self.status_label.setStyleSheet("color: #60a5fa;") # Tailwind blue-400
+        self.status_label.setStyleSheet("color: #4b5563;") # slate-600
 
         # Set up QProcess
         self.process = QProcess(self)
@@ -174,15 +174,15 @@ class OpenModelicaRunnerApp(QWidget):
     def on_process_finished(self, exit_code, exit_status):
         """Callback when the executable finishes."""
         self.run_btn.setEnabled(True)
-        self.run_btn.setText("🚀 Run Simulation")
+        self.run_btn.setText("Run Simulation")
         
         if exit_code == 0:
             self.status_label.setText("Simulation completed successfully.")
-            self.status_label.setStyleSheet("color: #34d399;") # Tailwind emerald-400
+            self.status_label.setStyleSheet("color: #059669;") # emerald-600
             QMessageBox.information(self, "Success", "The OpenModelica simulation completed successfully.")
         else:
             self.status_label.setText(f"Simulation failed with exit code {exit_code}.")
-            self.status_label.setStyleSheet("color: #f87171;") # Tailwind red-400
+            self.status_label.setStyleSheet("color: #dc2626;") # red-600
             
             stderr = self.process.readAllStandardError().data().decode().strip()
             error_msg = f"Process exited with code {exit_code}."
@@ -193,9 +193,9 @@ class OpenModelicaRunnerApp(QWidget):
     def on_process_error(self, error):
         """Callback for process-level errors (e.g., file not executable)."""
         self.run_btn.setEnabled(True)
-        self.run_btn.setText("🚀 Run Simulation")
+        self.run_btn.setText("Run Simulation")
         self.status_label.setText("Error launching process.")
-        self.status_label.setStyleSheet("color: #f87171;")
+        self.status_label.setStyleSheet("color: #dc2626;")
         self.show_error_message("Process Error", f"Failed to start the process: {self.process.errorString()}")
 
     def show_error_message(self, title, message):
@@ -208,124 +208,129 @@ class OpenModelicaRunnerApp(QWidget):
 
 
 def apply_premium_stylesheet(app):
-    """Applies a modern, premium dark theme to the PyQt6 application via QSS."""
+    """Applies a minimalist, clean light theme matching modern web aesthetics."""
     qss = """
     /* Main Window Background */
     QWidget {
-        background-color: #0f172a; /* Tailwind slate-900 */
-        color: #f8fafc; /* Tailwind slate-50 */
+        background-color: #f8f9fa; /* Very light gray */
+        color: #1f2937; /* Dark slate */
         font-family: 'Segoe UI', system-ui, sans-serif;
-        font-size: 14px;
+        font-size: 13px;
     }
 
     /* Labels */
     QLabel {
-        color: #cbd5e1; /* Tailwind slate-300 */
+        color: #4b5563; /* slate-600 */
     }
     
     QLabel#headerTitle {
-        font-size: 22px;
-        font-weight: bold;
-        color: #ffffff;
-        margin-bottom: 10px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #111827; /* Very dark slate */
+        margin-bottom: 15px;
+        letter-spacing: 0.5px;
     }
 
     QLabel#statusLabel {
         font-size: 13px;
-        color: #94a3b8; /* Tailwind slate-400 */
+        color: #6b7280; /* slate-500 */
         margin-top: 10px;
+        font-weight: 500;
     }
 
     /* Input Fields */
     QLineEdit {
-        background-color: #1e293b; /* Tailwind slate-800 */
-        border: 1px solid #334155; /* Tailwind slate-700 */
-        border-radius: 6px;
-        padding: 8px 12px;
-        color: #f8fafc;
-        selection-background-color: #4f46e5;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb; /* Soft border */
+        border-radius: 20px; /* Pill shape */
+        padding: 8px 16px;
+        color: #1f2937;
+        selection-background-color: #f3f4f6;
     }
     
     QLineEdit:focus {
-        border: 1px solid #6366f1; /* Tailwind indigo-500 */
-        background-color: #0f172a;
+        border: 1px solid #9ca3af;
+        background-color: #ffffff;
     }
 
     /* Buttons */
     QPushButton {
-        background-color: #334155; /* Tailwind slate-700 */
-        border: none;
-        border-radius: 6px;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px; /* Pill shape */
         padding: 8px 16px;
-        color: #f8fafc;
-        font-weight: 500;
+        color: #374151;
+        font-weight: 600;
     }
 
     QPushButton:hover {
-        background-color: #475569; /* Tailwind slate-600 */
+        background-color: #f9fafb;
+        border: 1px solid #d1d5db;
     }
 
     QPushButton:pressed {
-        background-color: #1e293b; /* Tailwind slate-800 */
+        background-color: #f3f4f6;
     }
 
     /* Primary Run Button */
     QPushButton#runBtn {
-        background-color: #4f46e5; /* Tailwind indigo-600 */
-        font-size: 16px;
-        font-weight: bold;
-        border-radius: 8px;
+        background-color: #111827; /* Dark almost black */
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 22px; /* Large Pill */
+        border: none;
     }
 
     QPushButton#runBtn:hover {
-        background-color: #6366f1; /* Tailwind indigo-500 */
+        background-color: #1f2937;
     }
     
     QPushButton#runBtn:pressed {
-        background-color: #4338ca; /* Tailwind indigo-700 */
+        background-color: #000000;
     }
     
     QPushButton#runBtn:disabled {
-        background-color: #334155;
-        color: #94a3b8;
-    }
-
-    /* Browse Button */
-    QPushButton#browseBtn {
-        background-color: #0ea5e9; /* Tailwind sky-500 */
-    }
-    QPushButton#browseBtn:hover {
-        background-color: #38bdf8; /* Tailwind sky-400 */
+        background-color: #e5e7eb;
+        color: #9ca3af;
     }
 
     /* Group Box */
     QGroupBox {
-        border: 1px solid #334155;
-        border-radius: 8px;
+        background-color: #ffffff;
+        border: 1px solid #f3f4f6;
+        border-radius: 12px;
         margin-top: 1.5em;
-        padding-top: 10px;
-        background-color: #0b1120;
+        padding-top: 15px;
     }
 
     QGroupBox::title {
         subcontrol-origin: margin;
         subcontrol-position: top left;
-        left: 15px;
+        left: 20px;
         padding: 0 5px;
-        color: #38bdf8; /* Tailwind sky-400 */
-        font-weight: bold;
+        color: #6b7280;
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
     }
     
     /* Dialogs (Message Boxes) */
     QMessageBox {
-        background-color: #0f172a;
+        background-color: #ffffff;
     }
     QMessageBox QLabel {
-        color: #f8fafc;
+        color: #1f2937;
     }
     QMessageBox QPushButton {
         min-width: 80px;
-        background-color: #4f46e5;
+        background-color: #ffffff;
+        color: #111827;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+    }
+    QMessageBox QPushButton:hover {
+        background-color: #f9fafb;
     }
     """
     app.setStyleSheet(qss)
@@ -335,7 +340,7 @@ def main():
     """Main entry point of the application."""
     app = QApplication(sys.argv)
     
-    # Apply standard modern style base, then apply our premium QSS on top
+    # Apply standard modern style base, then apply our minimalist QSS on top
     app.setStyle('Fusion')
     apply_premium_stylesheet(app)
     
