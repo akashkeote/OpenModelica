@@ -206,7 +206,14 @@ class OpenModelicaRunnerApp(QWidget):
         if exit_code == 0:
             self.status_label.setText("Simulation completed successfully.")
             self.status_label.setStyleSheet("color: #10b981;") # emerald-500
-            QMessageBox.information(self, "Success", "Simulation finished successfully.")
+            
+            # Read stdout to show the user that the executable actually processed the times
+            stdout = self.process.readAllStandardOutput().data().decode().strip()
+            msg = "Simulation finished successfully."
+            if stdout:
+                msg += f"\n\n--- Executable Output ---\n{stdout}"
+                
+            QMessageBox.information(self, "Success", msg)
         else:
             self.status_label.setText(f"Process failed (Exit: {exit_code}).")
             self.status_label.setStyleSheet("color: #ef4444;") # red-500
