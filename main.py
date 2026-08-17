@@ -292,6 +292,8 @@ def apply_premium_stylesheet(app):
         padding: 10px 14px;
         color: #292524;
         font-size: 13px;
+        selection-background-color: #0ea5e9; /* Sky 500 */
+        selection-color: #ffffff;
     }
     
     QLineEdit:focus {
@@ -351,9 +353,6 @@ def apply_premium_stylesheet(app):
 
 def main():
     app = QApplication(sys.argv)
-    
-    # Enable high DPI scaling for crisp UI
-    app.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps, True)
     
     # Load fonts
     load_custom_fonts()
