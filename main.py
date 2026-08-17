@@ -137,7 +137,7 @@ class OpenModelicaRunnerApp(QWidget):
             self.status_label.setText("Awaiting input parameters...")
 
     def browse_executable(self):
-        file_filter = "Executable Files (*.exe);;All Files (*)" if os.name == 'nt' else "All Files (*)"
+        file_filter = "All Files (*);;Executable Files (*.exe)"
         file_path, _ = QFileDialog.getOpenFileName(
             self, "Select OpenModelica Executable", "", file_filter
         )
