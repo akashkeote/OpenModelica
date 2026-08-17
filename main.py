@@ -285,6 +285,7 @@ def apply_premium_stylesheet(app):
         padding: 10px 14px;
         color: #292524;
         font-size: 13px;
+        placeholder-text-color: #d6d3d1; /* Stone 300 - very light/faded */
         selection-background-color: #0ea5e9; /* Sky 500 */
         selection-color: #ffffff;
     }
