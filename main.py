@@ -28,7 +28,7 @@ class OpenModelicaRunnerApp(QWidget):
         widget.setGraphicsEffect(shadow)
 
     def init_ui(self):
-        self.setWindowTitle("OpenModelica Arcade Runner")
+        self.setWindowTitle("OpenModelica Simulation Runner")
         self.resize(650, 420)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
 
@@ -38,7 +38,7 @@ class OpenModelicaRunnerApp(QWidget):
         main_layout.setSpacing(25)
 
         # Header Title
-        self.title_label = QLabel("ARCADE.26 SIMULATION")
+        self.title_label = QLabel("OPENMODELICA SIMULATION")
         self.title_label.setObjectName("headerTitle")
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(self.title_label)
