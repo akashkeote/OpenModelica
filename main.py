@@ -10,34 +10,8 @@ from PyQt6.QtCore import Qt, QProcess
 from PyQt6.QtGui import QFontDatabase, QColor, QFont
 
 def load_custom_fonts():
-    """Downloads and loads custom fonts from CDNs."""
-    try:
-        ssl._create_default_https_context = ssl._create_unverified_context
-    except Exception:
-        pass
-
-    fonts = {
-        "SpaceGrotesk-Regular.ttf": "https://cdn.jsdelivr.net/gh/floriankarsten/space-grotesk@master/fonts/ttf/static/SpaceGrotesk-Regular.ttf",
-        "DotGothic16-Regular.ttf": "https://cdn.jsdelivr.net/gh/fontworks-fonts/DotGothic16@master/fonts/ttf/DotGothic16-Regular.ttf"
-    }
-    
-    font_families = []
-    for filename, url in fonts.items():
-        if not os.path.exists(filename):
-            try:
-                req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-                with urllib.request.urlopen(req) as response, open(filename, 'wb') as out_file:
-                    out_file.write(response.read())
-            except Exception as e:
-                print(f"Download failed for {filename}: {e}")
-        
-        if os.path.exists(filename):
-            font_id = QFontDatabase.addApplicationFont(filename)
-            if font_id != -1:
-                family = QFontDatabase.applicationFontFamilies(font_id)[0]
-                font_families.append(family)
-    return font_families
-
+    """Font downloading removed for stability. Using safe system fonts."""
+    pass
 
 class OpenModelicaRunnerApp(QWidget):
     def __init__(self):
@@ -242,13 +216,13 @@ def apply_premium_stylesheet(app):
     QWidget {
         background-color: #fafaf9; /* Warm very light gray (stone-50) */
         color: #1c1917; /* Dark stone */
-        font-family: 'Space Grotesk', 'Inter', 'Segoe UI', sans-serif;
+        font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
         font-size: 14px;
     }
 
     /* Typography */
     QLabel#headerTitle {
-        font-family: 'DotGothic16', 'Courier New', monospace;
+        font-family: 'Consolas', 'Courier New', monospace;
         font-size: 26px;
         color: #0f172a; /* Slate 900 */
         letter-spacing: 2px;
@@ -256,14 +230,14 @@ def apply_premium_stylesheet(app):
     }
 
     QLabel#subtitleLabel {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
         font-size: 13px;
         color: #78716c; /* Stone 500 */
         margin-bottom: 10px;
     }
 
     QLabel#fieldLabel {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
         font-size: 11px;
         font-weight: bold;
         color: #57534e; /* Stone 600 */
@@ -271,7 +245,7 @@ def apply_premium_stylesheet(app):
     }
 
     QLabel#statusLabel {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
         font-size: 13px;
         color: #a8a29e; /* Stone 400 */
         margin-top: 5px;
