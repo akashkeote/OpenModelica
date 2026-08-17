@@ -19,21 +19,32 @@ class OpenModelicaRunnerApp(QWidget):
 
     def init_ui(self):
         """Initializes the User Interface layout and components."""
-        self.setWindowTitle("OpenModelica Executable Runner")
-        self.resize(550, 250)
+        self.setWindowTitle("OpenModelica Premium Runner")
+        self.resize(600, 350)
 
         main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(25, 25, 25, 25)
+        main_layout.setSpacing(20)
 
-        # Group box for better aesthetics
-        config_group = QGroupBox("Execution Configuration")
+        # Header Title
+        title_label = QLabel("OpenModelica Execution Setup")
+        title_label.setObjectName("headerTitle")
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        main_layout.addWidget(title_label)
+
+        # Group box for configuration
+        config_group = QGroupBox("Simulation Parameters")
         config_layout = QVBoxLayout()
+        config_layout.setContentsMargins(20, 30, 20, 20)
+        config_layout.setSpacing(15)
 
         # 1. Executable Path Selection
         exe_layout = QHBoxLayout()
         self.exe_path_label = QLabel("Executable Path:")
         self.exe_path_input = QLineEdit()
-        self.exe_path_input.setPlaceholderText("Select the OpenModelica executable...")
-        self.exe_browse_btn = QPushButton("Browse...")
+        self.exe_path_input.setPlaceholderText("Select the OpenModelica executable (.exe)...")
+        self.exe_browse_btn = QPushButton("Browse")
+        self.exe_browse_btn.setObjectName("browseBtn")
         self.exe_browse_btn.clicked.connect(self.browse_executable)
         
         exe_layout.addWidget(self.exe_path_label)
@@ -42,7 +53,7 @@ class OpenModelicaRunnerApp(QWidget):
 
         # 2. Start Time Input
         start_layout = QHBoxLayout()
-        self.start_time_label = QLabel("Start Time (Integer):")
+        self.start_time_label = QLabel("Start Time (Int):")
         self.start_time_input = QLineEdit()
         self.start_time_input.setPlaceholderText("e.g., 0")
         
@@ -51,7 +62,7 @@ class OpenModelicaRunnerApp(QWidget):
 
         # 3. Stop Time Input
         stop_layout = QHBoxLayout()
-        self.stop_time_label = QLabel("Stop Time (Integer):")
+        self.stop_time_label = QLabel("Stop Time (Int):")
         self.stop_time_input = QLineEdit()
         self.stop_time_input.setPlaceholderText("e.g., 4")
         
@@ -65,17 +76,20 @@ class OpenModelicaRunnerApp(QWidget):
         config_group.setLayout(config_layout)
 
         # 4. Run Button
-        self.run_btn = QPushButton("Run Executable")
-        self.run_btn.setMinimumHeight(40)
+        self.run_btn = QPushButton("🚀 Run Simulation")
+        self.run_btn.setObjectName("runBtn")
+        self.run_btn.setMinimumHeight(45)
+        self.run_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.run_btn.clicked.connect(self.run_executable)
 
         # Output / Status label
         self.status_label = QLabel("Ready")
+        self.status_label.setObjectName("statusLabel")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.status_label.setStyleSheet("color: gray; font-style: italic;")
 
         # Add everything to main layout
         main_layout.addWidget(config_group)
+        main_layout.addStretch()
         main_layout.addWidget(self.run_btn)
         main_layout.addWidget(self.status_label)
         
@@ -94,9 +108,6 @@ class OpenModelicaRunnerApp(QWidget):
         """
         Validates the inputs based on the condition:
         0 <= start time < stop time < 5
-        
-        Returns:
-            bool: True if inputs are valid, False otherwise.
         """
         exe_path = self.exe_path_input.text().strip()
         if not exe_path:
@@ -145,35 +156,34 @@ class OpenModelicaRunnerApp(QWidget):
         start_time = self.start_time_input.text().strip()
         stop_time = self.stop_time_input.text().strip()
 
-        # Determine arguments
-        # As per OpenModelica docs, the flag is -override startTime=X,stopTime=Y
         args = ["-override", f"startTime={start_time},stopTime={stop_time}"]
 
         # Disable button while running
         self.run_btn.setEnabled(False)
-        self.status_label.setText("Running simulation...")
-        self.status_label.setStyleSheet("color: blue; font-weight: bold;")
+        self.run_btn.setText("⏳ Running...")
+        self.status_label.setText("Executing simulation in background...")
+        self.status_label.setStyleSheet("color: #60a5fa;") # Tailwind blue-400
 
         # Set up QProcess
         self.process = QProcess(self)
         self.process.finished.connect(self.on_process_finished)
         self.process.errorOccurred.connect(self.on_process_error)
         
-        # Start the execution
         self.process.start(exe_path, args)
 
     def on_process_finished(self, exit_code, exit_status):
         """Callback when the executable finishes."""
         self.run_btn.setEnabled(True)
+        self.run_btn.setText("🚀 Run Simulation")
+        
         if exit_code == 0:
             self.status_label.setText("Simulation completed successfully.")
-            self.status_label.setStyleSheet("color: green; font-weight: bold;")
+            self.status_label.setStyleSheet("color: #34d399;") # Tailwind emerald-400
             QMessageBox.information(self, "Success", "The OpenModelica simulation completed successfully.")
         else:
             self.status_label.setText(f"Simulation failed with exit code {exit_code}.")
-            self.status_label.setStyleSheet("color: red; font-weight: bold;")
+            self.status_label.setStyleSheet("color: #f87171;") # Tailwind red-400
             
-            # Read standard error output if available
             stderr = self.process.readAllStandardError().data().decode().strip()
             error_msg = f"Process exited with code {exit_code}."
             if stderr:
@@ -183,21 +193,151 @@ class OpenModelicaRunnerApp(QWidget):
     def on_process_error(self, error):
         """Callback for process-level errors (e.g., file not executable)."""
         self.run_btn.setEnabled(True)
+        self.run_btn.setText("🚀 Run Simulation")
         self.status_label.setText("Error launching process.")
-        self.status_label.setStyleSheet("color: red; font-weight: bold;")
+        self.status_label.setStyleSheet("color: #f87171;")
         self.show_error_message("Process Error", f"Failed to start the process: {self.process.errorString()}")
 
     def show_error_message(self, title, message):
         """Helper to show error popups."""
-        QMessageBox.critical(self, title, message)
+        msg_box = QMessageBox(self)
+        msg_box.setIcon(QMessageBox.Icon.Critical)
+        msg_box.setWindowTitle(title)
+        msg_box.setText(message)
+        msg_box.exec()
+
+
+def apply_premium_stylesheet(app):
+    """Applies a modern, premium dark theme to the PyQt6 application via QSS."""
+    qss = """
+    /* Main Window Background */
+    QWidget {
+        background-color: #0f172a; /* Tailwind slate-900 */
+        color: #f8fafc; /* Tailwind slate-50 */
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        font-size: 14px;
+    }
+
+    /* Labels */
+    QLabel {
+        color: #cbd5e1; /* Tailwind slate-300 */
+    }
+    
+    QLabel#headerTitle {
+        font-size: 22px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 10px;
+    }
+
+    QLabel#statusLabel {
+        font-size: 13px;
+        color: #94a3b8; /* Tailwind slate-400 */
+        margin-top: 10px;
+    }
+
+    /* Input Fields */
+    QLineEdit {
+        background-color: #1e293b; /* Tailwind slate-800 */
+        border: 1px solid #334155; /* Tailwind slate-700 */
+        border-radius: 6px;
+        padding: 8px 12px;
+        color: #f8fafc;
+        selection-background-color: #4f46e5;
+    }
+    
+    QLineEdit:focus {
+        border: 1px solid #6366f1; /* Tailwind indigo-500 */
+        background-color: #0f172a;
+    }
+
+    /* Buttons */
+    QPushButton {
+        background-color: #334155; /* Tailwind slate-700 */
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        color: #f8fafc;
+        font-weight: 500;
+    }
+
+    QPushButton:hover {
+        background-color: #475569; /* Tailwind slate-600 */
+    }
+
+    QPushButton:pressed {
+        background-color: #1e293b; /* Tailwind slate-800 */
+    }
+
+    /* Primary Run Button */
+    QPushButton#runBtn {
+        background-color: #4f46e5; /* Tailwind indigo-600 */
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+    }
+
+    QPushButton#runBtn:hover {
+        background-color: #6366f1; /* Tailwind indigo-500 */
+    }
+    
+    QPushButton#runBtn:pressed {
+        background-color: #4338ca; /* Tailwind indigo-700 */
+    }
+    
+    QPushButton#runBtn:disabled {
+        background-color: #334155;
+        color: #94a3b8;
+    }
+
+    /* Browse Button */
+    QPushButton#browseBtn {
+        background-color: #0ea5e9; /* Tailwind sky-500 */
+    }
+    QPushButton#browseBtn:hover {
+        background-color: #38bdf8; /* Tailwind sky-400 */
+    }
+
+    /* Group Box */
+    QGroupBox {
+        border: 1px solid #334155;
+        border-radius: 8px;
+        margin-top: 1.5em;
+        padding-top: 10px;
+        background-color: #0b1120;
+    }
+
+    QGroupBox::title {
+        subcontrol-origin: margin;
+        subcontrol-position: top left;
+        left: 15px;
+        padding: 0 5px;
+        color: #38bdf8; /* Tailwind sky-400 */
+        font-weight: bold;
+    }
+    
+    /* Dialogs (Message Boxes) */
+    QMessageBox {
+        background-color: #0f172a;
+    }
+    QMessageBox QLabel {
+        color: #f8fafc;
+    }
+    QMessageBox QPushButton {
+        min-width: 80px;
+        background-color: #4f46e5;
+    }
+    """
+    app.setStyleSheet(qss)
 
 
 def main():
     """Main entry point of the application."""
     app = QApplication(sys.argv)
     
-    # Set a clean modern style
+    # Apply standard modern style base, then apply our premium QSS on top
     app.setStyle('Fusion')
+    apply_premium_stylesheet(app)
     
     runner = OpenModelicaRunnerApp()
     runner.show()
