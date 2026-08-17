@@ -1,10 +1,36 @@
 import sys
 import os
+import urllib.request
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, 
     QLabel, QLineEdit, QPushButton, QFileDialog, QMessageBox, QGroupBox
 )
 from PyQt6.QtCore import Qt, QProcess
+from PyQt6.QtGui import QFontDatabase, QFont
+
+def load_custom_fonts():
+    """Downloads and loads custom fonts from Google Fonts if they don't exist."""
+    fonts = {
+        "SpaceGrotesk-Regular.ttf": "https://github.com/googlefonts/spacegrotesk/raw/main/fonts/ttf/SpaceGrotesk-Regular.ttf",
+        "DotGothic16-Regular.ttf": "https://github.com/googlefonts/dotgothic16/raw/main/fonts/ttf/DotGothic16-Regular.ttf"
+    }
+    
+    for filename, url in fonts.items():
+        if not os.path.exists(filename):
+            try:
+                print(f"Downloading {filename}...")
+                urllib.request.urlretrieve(url, filename)
+            except Exception as e:
+                print(f"Failed to download {filename}: {e}")
+        
+        # Load into application
+        if os.path.exists(filename):
+            font_id = QFontDatabase.addApplicationFont(filename)
+            if font_id < 0:
+                print(f"Failed to load font {filename}")
+            else:
+                family = QFontDatabase.applicationFontFamilies(font_id)[0]
+                print(f"Loaded font family: {family}")
 
 
 class OpenModelicaRunnerApp(QWidget):
@@ -340,6 +366,9 @@ def apply_premium_stylesheet(app):
 def main():
     """Main entry point of the application."""
     app = QApplication(sys.argv)
+    
+    # Load custom fonts (downloads TTFs if necessary)
+    load_custom_fonts()
     
     # Apply standard modern style base, then apply our minimalist QSS on top
     app.setStyle('Fusion')
