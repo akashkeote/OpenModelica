@@ -214,7 +214,7 @@ def apply_premium_stylesheet(app):
     QWidget {
         background-color: #f8f9fa; /* Very light gray */
         color: #1f2937; /* Dark slate */
-        font-family: 'Segoe UI', system-ui, sans-serif;
+        font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
         font-size: 13px;
     }
 
