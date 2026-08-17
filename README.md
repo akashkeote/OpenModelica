@@ -1,46 +1,55 @@
-# OpenModelica Desktop App
+# OpenModelica Simulation Runner
 
-This repository contains my submission for the OpenModelica Screening Task (Part 2). I've created a Python GUI application using PyQt6 to run an OpenModelica simulation executable and pass start/stop time arguments to it.
+A professional desktop application built with Python and PyQt6 for configuring and executing OpenModelica simulation executables.
 
-## Project Files
+This project was developed as part of the OpenModelica Screening Task (Stage 1).
 
-- `main.py`: The PyQt6 application.
-- `requirements.txt`: Dependencies.
-- `README.md`: Setup instructions.
+## 🚀 Purpose of Application
+The primary goal of this application is to provide an intuitive Graphical User Interface (GUI) to run an OpenModelica-generated executable model (`TwoConnectedTanks.exe`). The application allows the user to dynamically pass simulation parameters (Start Time and Stop Time) to the executable without needing to recompile the model or use a command-line interface.
 
-## Prerequisites
+## 🛠️ Methodology & Technologies
+The application is built adhering strictly to Object-Oriented Programming (OOP) concepts and PEP-8 Python coding standards.
+- **Language**: Python 3.6+
+- **GUI Framework**: PyQt6
+- **Simulation Tool**: OpenModelica
+- **Design Pattern**: Object-Oriented (`QWidget` inheritance)
+- **Sub-processing**: Uses `PyQt6.QtCore.QProcess` to run the OpenModelica executable in an asynchronous, non-blocking background process to keep the UI responsive.
 
-1. **Python 3.6+** installed on your system.
-2. The compiled OpenModelica executable for the `TwoConnectedTanks` model. 
-   - Please place the compiled `.exe` (or Linux binary) and any required dependencies (like XML/DLL files) in the same directory as this repository.
+## 📋 Features
+- **Dynamic File Selection**: A browse button to select the target `.exe` file via native OS dialogs.
+- **Input Validation**: Ensures inputs strictly follow the condition: `0 <= start time < stop time < 5`.
+- **Modern UI/UX**: Features a meticulously designed, clean, light-themed interface with drop shadows, soft borders, and premium typography.
+- **Real-Time Feedback**: UI elements (buttons/status labels) provide real-time updates regarding the simulation execution status (Running, Success, Error).
 
-## Setup Instructions
+## ⚙️ Installation & Usage
 
-1. **Clone the repository**:
+1. **Clone the repository**
    ```bash
    git clone https://github.com/akashkeote/OpenModelica.git
    cd OpenModelica
    ```
 
-2. **Install the required packages**:
+2. **Install Dependencies**
+   Ensure you have Python 3.6+ installed. Install PyQt6 using pip:
    ```bash
-   pip install -r requirements.txt
+   pip install PyQt6
    ```
 
-## How to use the App
-
-1. **Run the script**:
+3. **Run the Application**
    ```bash
    python main.py
    ```
 
-2. **Execute the Simulation**:
-   - **Executable Path**: Use the "Browse..." button to select the OpenModelica executable you generated in Part 1.
-   - **Start Time / Stop Time**: Enter the desired times as integers. 
-   - Note: The app enforces the rule `0 <= Start Time < Stop Time < 5`. If you input invalid times, it will show an error message.
-   - Click **Run Executable**. The app will run the simulation in the background using the `-override startTime=X,stopTime=Y` flags, so the GUI won't freeze while you wait for the results.
+4. **Execution Steps**
+   - Click **Browse** and select the compiled OpenModelica executable (e.g., `TwoConnectedTanks.exe`).
+   - Enter a **Start Time** (e.g., 0).
+   - Enter a **Stop Time** (e.g., 4).
+   - Click **Initialize Simulation**.
+   - The application will execute the simulation and display the status at the bottom.
 
-## Implementation Details
-- The GUI is built using Object-Oriented principles by encapsulating the logic in the `OpenModelicaRunnerApp` class.
-- I've strictly followed PEP8 guidelines for clean and readable code.
-- To improve the user experience, I used `QProcess` to run the executable asynchronously and added error handling via `QMessageBox` popups to guide the user if something goes wrong.
+## 📝 Code Structure
+- `main.py`: The entry point and complete GUI implementation containing the `OpenModelicaRunnerApp` class.
+- `TwoConnectedTanks.exe`: (Optional) The compiled mock/real model executable used for testing.
+
+---
+*Submitted for the FOSSEE OpenModelica Screening Task.*
