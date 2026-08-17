@@ -104,11 +104,12 @@ class OpenModelicaRunnerApp(QWidget):
         self.run_btn.setMinimumHeight(48)
         self.run_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.run_btn.clicked.connect(self.run_executable)
+        self.run_btn.setEnabled(False) # Disabled by default
         self.add_shadow(self.run_btn, blur_radius=15, alpha=40, offset=(0, 4))
         card_layout.addWidget(self.run_btn)
 
         # Status Label inside card
-        self.status_label = QLabel("Ready for execution.")
+        self.status_label = QLabel("Awaiting input parameters...")
         self.status_label.setObjectName("statusLabel")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         card_layout.addWidget(self.status_label)
@@ -116,6 +117,24 @@ class OpenModelicaRunnerApp(QWidget):
         main_layout.addWidget(card)
         main_layout.addStretch()
         self.setLayout(main_layout)
+        
+        # Connect signals for dynamic button enabling
+        self.exe_path_input.textChanged.connect(self.check_ready_state)
+        self.start_time_input.textChanged.connect(self.check_ready_state)
+        self.stop_time_input.textChanged.connect(self.check_ready_state)
+
+    def check_ready_state(self):
+        """Enables the run button only when all fields have some text."""
+        has_exe = bool(self.exe_path_input.text().strip())
+        has_start = bool(self.start_time_input.text().strip())
+        has_stop = bool(self.stop_time_input.text().strip())
+        
+        if has_exe and has_start and has_stop:
+            self.run_btn.setEnabled(True)
+            self.status_label.setText("Ready for execution.")
+        else:
+            self.run_btn.setEnabled(False)
+            self.status_label.setText("Awaiting input parameters...")
 
     def browse_executable(self):
         file_filter = "Executable Files (*.exe);;All Files (*)" if os.name == 'nt' else "All Files (*)"
