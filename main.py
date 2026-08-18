@@ -114,22 +114,6 @@ def get_light_theme(scale: float = 1.0) -> str:
         background-color: #E5E7EB;
         color: #111827;
     }}
-    QComboBox#zoomBox {{
-        background-color: #FFFFFF;
-        color: #374151;
-        border: 1px solid #D1D5DB;
-        border-radius: {s(6)}px;
-        padding: {s(4)}px {s(8)}px;
-        font-size: {s(13)}px;
-        font-weight: 600;
-        min-height: {s(30)}px;
-    }}
-    QComboBox#zoomBox QAbstractItemView {{
-        background-color: #FFFFFF;
-        color: #374151;
-        selection-background-color: #2563EB;
-        selection-color: #FFFFFF;
-    }}
     """
 
 
@@ -234,22 +218,6 @@ def get_dark_theme(scale: float = 1.0) -> str:
     QPushButton#themeBtn:hover {{
         background-color: #374151;
         color: #FFFFFF;
-    }}
-    QComboBox#zoomBox {{
-        background-color: #1F2937;
-        color: #F9FAFB;
-        border: 1px solid #4B5563;
-        border-radius: {s(6)}px;
-        padding: {s(4)}px {s(8)}px;
-        font-size: {s(13)}px;
-        font-weight: 600;
-        min-height: {s(30)}px;
-    }}
-    QComboBox#zoomBox QAbstractItemView {{
-        background-color: #1F2937;
-        color: #F9FAFB;
-        selection-background-color: #2563EB;
-        selection-color: #FFFFFF;
     }}
 
     /* File Dialog Styling for Dark Mode */
@@ -362,18 +330,20 @@ class OpenModelicaRunnerApp(QWidget):
         controls_layout = QHBoxLayout()
         controls_layout.setSpacing(10)
         
-        # Zoom ComboBox
-        zoom_label = QLabel("Zoom:")
-        zoom_label.setObjectName("fieldLabel")
+        # Zoom Controls
+        self.zoom_out_btn = QPushButton("−")
+        self.zoom_out_btn.setObjectName("themeBtn")
+        self.zoom_out_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.zoom_out_btn.clicked.connect(self.zoom_out)
+
+        self.zoom_level_label = QLabel("100%")
+        self.zoom_level_label.setObjectName("fieldLabel")
+        self.zoom_level_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-        self.zoom_combo = QComboBox()
-        self.zoom_combo.setObjectName("zoomBox")
-        self.zoom_combo.setMinimumWidth(80)
-        self.zoom_combo.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        for z in range(100, 205, 5):
-            self.zoom_combo.addItem(f"{z}%", z / 100.0)
-        self.zoom_combo.setCurrentText("100%")
-        self.zoom_combo.currentIndexChanged.connect(self.on_zoom_changed)
+        self.zoom_in_btn = QPushButton("+")
+        self.zoom_in_btn.setObjectName("themeBtn")
+        self.zoom_in_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.zoom_in_btn.clicked.connect(self.zoom_in)
         
         # Theme Toggle
         self.theme_btn = QPushButton("Switch to Light Mode")
@@ -381,8 +351,9 @@ class OpenModelicaRunnerApp(QWidget):
         self.theme_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.theme_btn.clicked.connect(self.toggle_theme)
         
-        controls_layout.addWidget(zoom_label)
-        controls_layout.addWidget(self.zoom_combo)
+        controls_layout.addWidget(self.zoom_out_btn)
+        controls_layout.addWidget(self.zoom_level_label)
+        controls_layout.addWidget(self.zoom_in_btn)
         controls_layout.addWidget(self.theme_btn)
         
         top_bar_layout.addLayout(titles_layout)
@@ -493,10 +464,22 @@ class OpenModelicaRunnerApp(QWidget):
         self.is_dark_mode = not self.is_dark_mode
         self.apply_theme()
 
-    def on_zoom_changed(self) -> None:
-        """Handle zoom level change from the combo box."""
-        self.scale_factor = self.zoom_combo.currentData()
-        self.apply_theme()
+    def zoom_in(self) -> None:
+        """Increase zoom level by 5% up to 200%."""
+        if self.scale_factor < 2.0:
+            self.scale_factor += 0.05
+            self.zoom_level_label.setText(f"{int(self.scale_factor * 100)}%")
+            self.apply_theme()
+
+    def zoom_out(self) -> None:
+        """Decrease zoom level by 5% down to 100%."""
+        if self.scale_factor > 1.0:
+            # Prevent floating point precision issues rounding down to 99%
+            new_scale = round((self.scale_factor - 0.05) * 100) / 100.0
+            if new_scale >= 1.0:
+                self.scale_factor = new_scale
+                self.zoom_level_label.setText(f"{int(self.scale_factor * 100)}%")
+                self.apply_theme()
 
     def apply_theme(self) -> None:
         """Apply the CSS stylesheet corresponding to the current theme and zoom level."""
