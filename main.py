@@ -218,7 +218,15 @@ class OpenModelicaRunnerApp(QWidget):
             self.status_label.setText(f"Process failed (Exit: {exit_code}).")
             self.status_label.setStyleSheet("color: #ef4444;") # red-500
             stderr = self.process.readAllStandardError().data().decode().strip()
-            self.show_error_message("Execution Error", f"Process failed.\n{stderr}")
+            stdout = self.process.readAllStandardOutput().data().decode().strip()
+            
+            err_msg = "Process failed."
+            if stderr:
+                err_msg += f"\n\n[STDERR]\n{stderr}"
+            if stdout:
+                err_msg += f"\n\n[STDOUT]\n{stdout}"
+                
+            self.show_error_message("Execution Error", err_msg)
 
     def on_process_error(self, error):
         self.run_btn.setEnabled(True)
