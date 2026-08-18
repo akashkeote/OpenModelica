@@ -21,6 +21,18 @@ The application is built adhering strictly to Object-Oriented Programming (OOP) 
 - **Modern UI/UX**: Features a meticulously designed, clean, light-themed interface with drop shadows, soft borders, and premium typography.
 - **Real-Time Feedback**: UI elements (buttons/status labels) provide real-time updates regarding the simulation execution status (Running, Success, Error).
 
+## 📸 Screenshots
+
+| Light Mode (Idle) | Light Mode (Success) |
+|:---:|:---:|
+| <img src="snap/1.png" width="400"> | <img src="snap/3.png" width="400"> |
+
+| Dark Mode (Zoomed) | File Browser Dialog |
+|:---:|:---:|
+| <img src="snap/5.png" width="400"> | <img src="snap/6.png" width="400"> |
+
+<br>
+
 ## ⚙️ Installation & Usage
 
 1. **Clone the repository**
