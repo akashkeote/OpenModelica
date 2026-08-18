@@ -333,15 +333,18 @@ class OpenModelicaRunnerApp(QWidget):
         # Zoom Controls
         self.zoom_out_btn = QPushButton("−")
         self.zoom_out_btn.setObjectName("themeBtn")
+        self.zoom_out_btn.setMinimumSize(35, 30)
         self.zoom_out_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.zoom_out_btn.clicked.connect(self.zoom_out)
 
         self.zoom_level_label = QLabel("100%")
         self.zoom_level_label.setObjectName("fieldLabel")
+        self.zoom_level_label.setMinimumWidth(50)
         self.zoom_level_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         self.zoom_in_btn = QPushButton("+")
         self.zoom_in_btn.setObjectName("themeBtn")
+        self.zoom_in_btn.setMinimumSize(35, 30)
         self.zoom_in_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.zoom_in_btn.clicked.connect(self.zoom_in)
         
