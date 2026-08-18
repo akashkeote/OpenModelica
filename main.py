@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import (
     QGraphicsDropShadowEffect, QSpacerItem, QSizePolicy, QComboBox
 )
 from PyQt6.QtCore import Qt, QProcess
-from PyQt6.QtGui import QCursor, QColor
+from PyQt6.QtGui import QCursor, QColor, QIcon
 
 
 def get_light_theme(scale: float = 1.0) -> str:
@@ -349,7 +349,7 @@ class OpenModelicaRunnerApp(QWidget):
         self.zoom_in_btn.clicked.connect(self.zoom_in)
         
         # Theme Toggle
-        self.theme_btn = QPushButton("☀️ Light Mode")
+        self.theme_btn = QPushButton("Light Mode")
         self.theme_btn.setObjectName("themeBtn")
         self.theme_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.theme_btn.clicked.connect(self.toggle_theme)
@@ -396,7 +396,7 @@ class OpenModelicaRunnerApp(QWidget):
         self.exe_path_input.setPlaceholderText("Select your OpenModelica binary file...")
         self.exe_path_input.textChanged.connect(self.check_ready_state)
         
-        browse_btn = QPushButton("📁 Browse")
+        browse_btn = QPushButton("Browse")
         browse_btn.setObjectName("secondaryBtn")
         browse_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         browse_btn.clicked.connect(self.browse_executable)
@@ -440,7 +440,7 @@ class OpenModelicaRunnerApp(QWidget):
         card_layout.addSpacerItem(QSpacerItem(20, 10, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed))
 
         # 3. Action Button
-        self.run_btn = QPushButton("🚀 Run Simulation")
+        self.run_btn = QPushButton("Run Simulation")
         self.run_btn.setObjectName("primaryBtn")
         self.run_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.run_btn.setEnabled(False)
@@ -488,11 +488,11 @@ class OpenModelicaRunnerApp(QWidget):
         """Apply the CSS stylesheet corresponding to the current theme and zoom level."""
         if self.is_dark_mode:
             self.setStyleSheet(get_dark_theme(self.scale_factor))
-            self.theme_btn.setText("☀️ Light Mode")
+            self.theme_btn.setText("Light Mode")
             self.shadow.setColor(QColor(0, 0, 0, 40))
         else:
             self.setStyleSheet(get_light_theme(self.scale_factor))
-            self.theme_btn.setText("🌙 Dark Mode")
+            self.theme_btn.setText("Dark Mode")
             self.shadow.setColor(QColor(0, 0, 0, 15))
             
         self.update_status_color()
@@ -589,7 +589,7 @@ class OpenModelicaRunnerApp(QWidget):
             args = sim_args
 
         self.run_btn.setEnabled(False)
-        self.run_btn.setText("⏳ Executing Sequence...")
+        self.run_btn.setText("Executing Sequence...")
         self.status_label.setText(f"Running on {current_os}...")
         self.update_status_color()
 
@@ -603,7 +603,7 @@ class OpenModelicaRunnerApp(QWidget):
     def on_process_finished(self, exit_code: int, exit_status: QProcess.ExitStatus) -> None:
         """Handle process completion, capturing stdout/stderr."""
         self.run_btn.setEnabled(True)
-        self.run_btn.setText("🚀 Run Simulation")
+        self.run_btn.setText("Run Simulation")
 
         if exit_code == 0 and exit_status == QProcess.ExitStatus.NormalExit:
             self.status_label.setText("Simulation completed successfully.")
@@ -631,7 +631,7 @@ class OpenModelicaRunnerApp(QWidget):
     def on_process_error(self, error: QProcess.ProcessError) -> None:
         """Handle failure to launch the executable."""
         self.run_btn.setEnabled(True)
-        self.run_btn.setText("🚀 Run Simulation")
+        self.run_btn.setText("Run Simulation")
         self.status_label.setText("Launch failed.")
         self.update_status_color()
         self.show_error_message("Process Error", f"Failed to start: {self.process.errorString()}")
@@ -645,6 +645,10 @@ class OpenModelicaRunnerApp(QWidget):
         msg_box.setIcon(QMessageBox.Icon.Critical)
         msg_box.setWindowTitle(title)
         msg_box.setText(message)
+        # Remove icon from OK button on Linux
+        ok_btn = msg_box.button(QMessageBox.StandardButton.Ok)
+        if ok_btn:
+            ok_btn.setIcon(QIcon())
         msg_box.exec()
         
     def show_success_message(self, title: str, message: str) -> None:
@@ -654,6 +658,10 @@ class OpenModelicaRunnerApp(QWidget):
         msg_box.setIcon(QMessageBox.Icon.Information)
         msg_box.setWindowTitle(title)
         msg_box.setText(message)
+        # Remove icon from OK button on Linux
+        ok_btn = msg_box.button(QMessageBox.StandardButton.Ok)
+        if ok_btn:
+            ok_btn.setIcon(QIcon())
         msg_box.exec()
         
     def _style_msg_box(self, msg_box: QMessageBox) -> None:
