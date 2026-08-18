@@ -5,291 +5,333 @@ import shutil
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, 
     QLabel, QLineEdit, QPushButton, QFileDialog, QMessageBox, QFrame,
-    QGraphicsDropShadowEffect, QSpacerItem, QSizePolicy
+    QGraphicsDropShadowEffect, QSpacerItem, QSizePolicy, QComboBox
 )
 from PyQt6.QtCore import Qt, QProcess
 from PyQt6.QtGui import QCursor, QColor
 
-# Professional Light Theme QSS
-LIGHT_THEME = """
-    QWidget {
+
+def get_light_theme(scale: float = 1.0) -> str:
+    """Generate Light Theme QSS with scaled font sizes."""
+    s = lambda px: int(px * scale)
+    return f"""
+    QWidget {{
         background-color: #F9FAFB;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-    QLabel {
+        font-size: {s(14)}px;
+    }}
+    QLabel {{
         background: transparent;
         color: #111827;
-    }
-    QLabel#headerTitle {
-        font-size: 28px;
+    }}
+    QLabel#headerTitle {{
+        font-size: {s(28)}px;
         font-weight: 800;
         letter-spacing: 0.5px;
-    }
-    QLabel#subtitleLabel {
-        font-size: 14px;
+    }}
+    QLabel#subtitleLabel {{
+        font-size: {s(14)}px;
         color: #6B7280;
-    }
-    QLabel#fieldLabel {
-        font-size: 12px;
+    }}
+    QLabel#fieldLabel {{
+        font-size: {s(12)}px;
         font-weight: 700;
         color: #374151;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         margin-bottom: 4px;
-    }
-    QLabel#statusLabel {
-        font-size: 13px;
+    }}
+    QLabel#statusLabel {{
+        font-size: {s(13)}px;
         color: #6B7280;
         font-weight: 500;
         margin-top: 8px;
-    }
-    QFrame#mainCard {
+    }}
+    QFrame#mainCard {{
         background-color: #FFFFFF;
-        border-radius: 12px;
+        border-radius: {s(12)}px;
         border: 1px solid #E5E7EB;
-    }
-    QLineEdit {
+    }}
+    QLineEdit {{
         background-color: #F3F4F6;
         border: 1px solid #D1D5DB;
-        border-radius: 6px;
-        padding: 0px 15px;
-        min-height: 45px;
+        border-radius: {s(6)}px;
+        padding: 0px {s(15)}px;
+        min-height: {s(45)}px;
         color: #111827;
-        font-size: 14px;
-    }
-    QLineEdit:focus {
+        font-size: {s(14)}px;
+    }}
+    QLineEdit:focus {{
         border: 2px solid #2563EB;
         background-color: #FFFFFF;
-        padding: 0px 14px;
-    }
-    QPushButton {
+        padding: 0px {s(14)}px;
+    }}
+    QPushButton {{
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-    QPushButton#primaryBtn {
+    }}
+    QPushButton#primaryBtn {{
         background-color: #2563EB;
         color: #FFFFFF;
-        border-radius: 6px;
-        padding: 0px 20px;
-        min-height: 45px;
-        font-size: 15px;
+        border-radius: {s(6)}px;
+        padding: 0px {s(20)}px;
+        min-height: {s(45)}px;
+        font-size: {s(15)}px;
         font-weight: 600;
         border: none;
-    }
-    QPushButton#primaryBtn:hover {
+    }}
+    QPushButton#primaryBtn:hover {{
         background-color: #1D4ED8;
-    }
-    QPushButton#primaryBtn:disabled {
+    }}
+    QPushButton#primaryBtn:disabled {{
         background-color: #9CA3AF;
         color: #F3F4F6;
-    }
-    QPushButton#secondaryBtn {
+    }}
+    QPushButton#secondaryBtn {{
         background-color: #FFFFFF;
         color: #374151;
         border: 1px solid #D1D5DB;
-        border-radius: 6px;
-        padding: 0px 20px;
-        min-height: 45px;
-        font-size: 13px;
+        border-radius: {s(6)}px;
+        padding: 0px {s(20)}px;
+        min-height: {s(45)}px;
+        font-size: {s(13)}px;
         font-weight: 600;
-    }
-    QPushButton#secondaryBtn:hover {
+    }}
+    QPushButton#secondaryBtn:hover {{
         background-color: #F3F4F6;
         color: #111827;
-    }
-    QPushButton#themeBtn {
+    }}
+    QPushButton#themeBtn {{
         background-color: transparent;
         color: #4B5563;
-        font-size: 13px;
+        font-size: {s(13)}px;
         font-weight: 600;
-        border-radius: 6px;
+        border-radius: {s(6)}px;
         border: 1px solid #D1D5DB;
-        padding: 6px 12px;
-        min-height: 30px;
-    }
-    QPushButton#themeBtn:hover {
+        padding: {s(6)}px {s(12)}px;
+        min-height: {s(30)}px;
+    }}
+    QPushButton#themeBtn:hover {{
         background-color: #E5E7EB;
         color: #111827;
-    }
-"""
+    }}
+    QComboBox#zoomBox {{
+        background-color: #FFFFFF;
+        color: #374151;
+        border: 1px solid #D1D5DB;
+        border-radius: {s(6)}px;
+        padding: {s(4)}px {s(8)}px;
+        font-size: {s(13)}px;
+        font-weight: 600;
+        min-height: {s(30)}px;
+    }}
+    QComboBox#zoomBox QAbstractItemView {{
+        background-color: #FFFFFF;
+        color: #374151;
+        selection-background-color: #2563EB;
+        selection-color: #FFFFFF;
+    }}
+    """
 
-# Professional Dark Theme QSS
-DARK_THEME = """
-    QWidget {
+
+def get_dark_theme(scale: float = 1.0) -> str:
+    """Generate Dark Theme QSS with scaled font sizes."""
+    s = lambda px: int(px * scale)
+    return f"""
+    QWidget {{
         background-color: #111827;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-    QLabel {
+        font-size: {s(14)}px;
+    }}
+    QLabel {{
         background: transparent;
         color: #F9FAFB;
-    }
-    QLabel#headerTitle {
-        font-size: 28px;
+    }}
+    QLabel#headerTitle {{
+        font-size: {s(28)}px;
         font-weight: 800;
         letter-spacing: 0.5px;
-    }
-    QLabel#subtitleLabel {
-        font-size: 14px;
+    }}
+    QLabel#subtitleLabel {{
+        font-size: {s(14)}px;
         color: #9CA3AF;
-    }
-    QLabel#fieldLabel {
-        font-size: 12px;
+    }}
+    QLabel#fieldLabel {{
+        font-size: {s(12)}px;
         font-weight: 700;
         color: #D1D5DB;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         margin-bottom: 4px;
-    }
-    QLabel#statusLabel {
-        font-size: 13px;
+    }}
+    QLabel#statusLabel {{
+        font-size: {s(13)}px;
         color: #9CA3AF;
         font-weight: 500;
         margin-top: 8px;
-    }
-    QFrame#mainCard {
+    }}
+    QFrame#mainCard {{
         background-color: #1F2937;
-        border-radius: 12px;
+        border-radius: {s(12)}px;
         border: 1px solid #374151;
-    }
-    QLineEdit {
+    }}
+    QLineEdit {{
         background-color: #111827;
         border: 1px solid #4B5563;
-        border-radius: 6px;
-        padding: 0px 15px;
-        min-height: 45px;
+        border-radius: {s(6)}px;
+        padding: 0px {s(15)}px;
+        min-height: {s(45)}px;
         color: #F9FAFB;
-        font-size: 14px;
-    }
-    QLineEdit:focus {
+        font-size: {s(14)}px;
+    }}
+    QLineEdit:focus {{
         border: 2px solid #3B82F6;
-        padding: 0px 14px;
-    }
-    QPushButton {
+        padding: 0px {s(14)}px;
+    }}
+    QPushButton {{
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-    QPushButton#primaryBtn {
+    }}
+    QPushButton#primaryBtn {{
         background-color: #2563EB;
         color: #FFFFFF;
-        border-radius: 6px;
-        padding: 0px 20px;
-        min-height: 45px;
-        font-size: 15px;
+        border-radius: {s(6)}px;
+        padding: 0px {s(20)}px;
+        min-height: {s(45)}px;
+        font-size: {s(15)}px;
         font-weight: 600;
         border: none;
-    }
-    QPushButton#primaryBtn:hover {
+    }}
+    QPushButton#primaryBtn:hover {{
         background-color: #3B82F6;
-    }
-    QPushButton#primaryBtn:disabled {
+    }}
+    QPushButton#primaryBtn:disabled {{
         background-color: #4B5563;
         color: #9CA3AF;
-    }
-    QPushButton#secondaryBtn {
+    }}
+    QPushButton#secondaryBtn {{
         background-color: #374151;
         color: #F9FAFB;
         border: 1px solid #4B5563;
-        border-radius: 6px;
-        padding: 0px 20px;
-        min-height: 45px;
-        font-size: 13px;
+        border-radius: {s(6)}px;
+        padding: 0px {s(20)}px;
+        min-height: {s(45)}px;
+        font-size: {s(13)}px;
         font-weight: 600;
-    }
-    QPushButton#secondaryBtn:hover {
+    }}
+    QPushButton#secondaryBtn:hover {{
         background-color: #4B5563;
         border-color: #6B7280;
-    }
-    QPushButton#themeBtn {
+    }}
+    QPushButton#themeBtn {{
         background-color: transparent;
         color: #D1D5DB;
-        font-size: 13px;
+        font-size: {s(13)}px;
         font-weight: 600;
-        border-radius: 6px;
+        border-radius: {s(6)}px;
         border: 1px solid #4B5563;
-        padding: 6px 12px;
-        min-height: 30px;
-    }
-    QPushButton#themeBtn:hover {
+        padding: {s(6)}px {s(12)}px;
+        min-height: {s(30)}px;
+    }}
+    QPushButton#themeBtn:hover {{
         background-color: #374151;
         color: #FFFFFF;
-    }
-
-    /* File Dialog Styling for Dark Mode */
-    QFileDialog {
+    }}
+    QComboBox#zoomBox {{
         background-color: #1F2937;
         color: #F9FAFB;
-    }
-    QFileDialog QLabel {
+        border: 1px solid #4B5563;
+        border-radius: {s(6)}px;
+        padding: {s(4)}px {s(8)}px;
+        font-size: {s(13)}px;
+        font-weight: 600;
+        min-height: {s(30)}px;
+    }}
+    QComboBox#zoomBox QAbstractItemView {{
+        background-color: #1F2937;
         color: #F9FAFB;
-    }
-    QFileDialog QLineEdit {
+        selection-background-color: #2563EB;
+        selection-color: #FFFFFF;
+    }}
+
+    /* File Dialog Styling for Dark Mode */
+    QFileDialog {{
+        background-color: #1F2937;
+        color: #F9FAFB;
+    }}
+    QFileDialog QLabel {{
+        color: #F9FAFB;
+    }}
+    QFileDialog QLineEdit {{
         background-color: #111827;
         color: #F9FAFB;
         border: 1px solid #4B5563;
         border-radius: 4px;
         padding: 0px 8px;
         min-height: 28px;
-    }
-    QFileDialog QPushButton {
+    }}
+    QFileDialog QPushButton {{
         background-color: #374151;
         color: #F9FAFB;
         border: 1px solid #4B5563;
         border-radius: 4px;
         padding: 4px 14px;
         min-height: 26px;
-    }
-    QFileDialog QPushButton:hover {
+    }}
+    QFileDialog QPushButton:hover {{
         background-color: #4B5563;
-    }
-    QFileDialog QComboBox {
+    }}
+    QFileDialog QComboBox {{
         background-color: #111827;
         color: #F9FAFB;
         border: 1px solid #4B5563;
         border-radius: 4px;
         padding: 4px 8px;
         min-height: 26px;
-    }
-    QFileDialog QComboBox QAbstractItemView {
+    }}
+    QFileDialog QComboBox QAbstractItemView {{
         background-color: #1F2937;
         color: #F9FAFB;
         selection-background-color: #2563EB;
-    }
-    QFileDialog QTreeView, QFileDialog QListView {
+    }}
+    QFileDialog QTreeView, QFileDialog QListView {{
         background-color: #111827;
         color: #F9FAFB;
         border: 1px solid #4B5563;
         selection-background-color: #2563EB;
         selection-color: #FFFFFF;
-    }
-    QFileDialog QHeaderView::section {
+    }}
+    QFileDialog QHeaderView::section {{
         background-color: #1F2937;
         color: #D1D5DB;
         border: 1px solid #374151;
         padding: 4px;
-    }
-    QFileDialog QToolButton {
+    }}
+    QFileDialog QToolButton {{
         background-color: #374151;
         color: #F9FAFB;
         border: 1px solid #4B5563;
         border-radius: 4px;
         padding: 4px;
-    }
-    QFileDialog QToolButton:hover {
+    }}
+    QFileDialog QToolButton:hover {{
         background-color: #4B5563;
-    }
-    QFileDialog QSplitter::handle {
+    }}
+    QFileDialog QSplitter::handle {{
         background-color: #374151;
-    }
-"""
+    }}
+    """
+
 
 class OpenModelicaRunnerApp(QWidget):
     """
     A PyQt6 Desktop Application to run OpenModelica executables.
-    Features dark/light mode, robust error handling, and PEP8 compliance.
+    Features dark/light mode, built-in zoom, robust error handling, and PEP8 compliance.
     """
 
     def __init__(self) -> None:
         """Initialize the application state and UI components."""
         super().__init__()
         self.is_dark_mode = True
+        self.scale_factor = 1.0
         self.process = None
         self.init_ui()
 
@@ -316,14 +358,35 @@ class OpenModelicaRunnerApp(QWidget):
         titles_layout.addWidget(title)
         titles_layout.addWidget(subtitle)
         
-        self.theme_btn = QPushButton("Toggle Light Mode")
+        # Controls: Zoom + Theme Toggle
+        controls_layout = QHBoxLayout()
+        controls_layout.setSpacing(10)
+        
+        # Zoom ComboBox
+        zoom_label = QLabel("Zoom:")
+        zoom_label.setStyleSheet("font-size: 13px; font-weight: 600;")
+        
+        self.zoom_combo = QComboBox()
+        self.zoom_combo.setObjectName("zoomBox")
+        self.zoom_combo.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        for z in range(100, 205, 5):
+            self.zoom_combo.addItem(f"{z}%", z / 100.0)
+        self.zoom_combo.setCurrentText("100%")
+        self.zoom_combo.currentIndexChanged.connect(self.on_zoom_changed)
+        
+        # Theme Toggle
+        self.theme_btn = QPushButton("Switch to Light Mode")
         self.theme_btn.setObjectName("themeBtn")
         self.theme_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.theme_btn.clicked.connect(self.toggle_theme)
         
+        controls_layout.addWidget(zoom_label)
+        controls_layout.addWidget(self.zoom_combo)
+        controls_layout.addWidget(self.theme_btn)
+        
         top_bar_layout.addLayout(titles_layout)
         top_bar_layout.addStretch()
-        top_bar_layout.addWidget(self.theme_btn, alignment=Qt.AlignmentFlag.AlignTop)
+        top_bar_layout.addLayout(controls_layout)
         
         main_layout.addWidget(top_bar)
 
@@ -422,19 +485,26 @@ class OpenModelicaRunnerApp(QWidget):
         # Apply initial theme
         self.apply_theme()
 
+    # ── Theme & Zoom ──────────────────────────────────────────────
+
     def toggle_theme(self) -> None:
         """Switch between dark and light themes."""
         self.is_dark_mode = not self.is_dark_mode
         self.apply_theme()
 
+    def on_zoom_changed(self) -> None:
+        """Handle zoom level change from the combo box."""
+        self.scale_factor = self.zoom_combo.currentData()
+        self.apply_theme()
+
     def apply_theme(self) -> None:
-        """Apply the CSS stylesheet corresponding to the current theme state."""
+        """Apply the CSS stylesheet corresponding to the current theme and zoom level."""
         if self.is_dark_mode:
-            self.setStyleSheet(DARK_THEME)
+            self.setStyleSheet(get_dark_theme(self.scale_factor))
             self.theme_btn.setText("Switch to Light Mode")
             self.shadow.setColor(QColor(0, 0, 0, 40))
         else:
-            self.setStyleSheet(LIGHT_THEME)
+            self.setStyleSheet(get_light_theme(self.scale_factor))
             self.theme_btn.setText("Switch to Dark Mode")
             self.shadow.setColor(QColor(0, 0, 0, 15))
             
@@ -444,15 +514,17 @@ class OpenModelicaRunnerApp(QWidget):
         """Update the status label color based on its text and current theme."""
         text = self.status_label.text()
         if "completed successfully" in text:
-            color = "#10B981" # Emerald
+            color = "#10B981"
         elif "failed" in text or "Error" in text:
-            color = "#EF4444" # Red
+            color = "#EF4444"
         elif "Running" in text:
-            color = "#3B82F6" # Blue
+            color = "#3B82F6"
         else:
-            color = "#9CA3AF" if self.is_dark_mode else "#6B7280" # Gray
+            color = "#9CA3AF" if self.is_dark_mode else "#6B7280"
             
         self.status_label.setStyleSheet(f"color: {color};")
+
+    # ── Input Handling ────────────────────────────────────────────
 
     def check_ready_state(self) -> None:
         """Enable the run button only if all required inputs are populated."""
@@ -476,6 +548,8 @@ class OpenModelicaRunnerApp(QWidget):
         )
         if file_path:
             self.exe_path_input.setText(file_path)
+
+    # ── Validation & Execution ────────────────────────────────────
 
     def validate_and_run(self) -> None:
         """Validate inputs based on FOSSEE criteria and trigger execution."""
@@ -506,24 +580,14 @@ class OpenModelicaRunnerApp(QWidget):
         Automatically detects the OS and runs accordingly:
         - Linux/macOS: Executes the binary directly via shell.
         - Windows: Routes the binary through WSL for Unix compatibility.
-        
-        Args:
-            exe_path (str): Absolute path to the OpenModelica binary.
-            start_time (int): Simulation start time.
-            stop_time (int): Simulation stop time.
         """
-        # Using the hint specified -override flag
         sim_args = ["-override", f"startTime={start_time},stopTime={stop_time}"]
-
         current_os = platform.system()
 
         if current_os == "Windows":
-            # Windows: Run the Linux ELF binary through WSL
             program = "wsl"
             args = [exe_path] + sim_args
         else:
-            # Linux / macOS: Run the binary directly
-            # Ensure the binary has execute permissions
             if not os.access(exe_path, os.X_OK):
                 os.chmod(exe_path, 0o755)
             program = exe_path
@@ -539,6 +603,8 @@ class OpenModelicaRunnerApp(QWidget):
         self.process.errorOccurred.connect(self.on_process_error)
         self.process.start(program, args)
 
+    # ── Process Callbacks ─────────────────────────────────────────
+
     def on_process_finished(self, exit_code: int, exit_status: QProcess.ExitStatus) -> None:
         """Handle process completion, capturing stdout/stderr."""
         self.run_btn.setEnabled(True)
@@ -552,7 +618,6 @@ class OpenModelicaRunnerApp(QWidget):
             msg = "Simulation finished successfully."
             if stdout:
                 msg += f"\n\n--- Executable Output ---\n{stdout}"
-            
             self.show_success_message("Success", msg)
         else:
             self.status_label.setText(f"Process failed (Exit: {exit_code}).")
@@ -566,7 +631,6 @@ class OpenModelicaRunnerApp(QWidget):
                 err_msg += f"\n\n[STDERR]\n{stderr}"
             if stdout:
                 err_msg += f"\n\n[STDOUT]\n{stdout}"
-                
             self.show_error_message("Execution Error", err_msg)
 
     def on_process_error(self, error: QProcess.ProcessError) -> None:
@@ -575,8 +639,9 @@ class OpenModelicaRunnerApp(QWidget):
         self.run_btn.setText("Initialize Simulation")
         self.status_label.setText("Launch failed.")
         self.update_status_color()
-        
         self.show_error_message("Process Error", f"Failed to start: {self.process.errorString()}")
+
+    # ── Dialogs ───────────────────────────────────────────────────
 
     def show_error_message(self, title: str, message: str) -> None:
         """Display a styled critical error dialog."""
@@ -599,9 +664,17 @@ class OpenModelicaRunnerApp(QWidget):
     def _style_msg_box(self, msg_box: QMessageBox) -> None:
         """Helper to style message boxes according to current theme."""
         if self.is_dark_mode:
-            msg_box.setStyleSheet("QMessageBox { background-color: #1F2937; } QLabel { color: #F9FAFB; } QPushButton { background-color: #2563EB; color: white; border-radius: 4px; padding: 6px 16px; }")
+            msg_box.setStyleSheet(
+                "QMessageBox { background-color: #1F2937; }"
+                "QLabel { color: #F9FAFB; }"
+                "QPushButton { background-color: #2563EB; color: white; border-radius: 4px; padding: 6px 16px; }"
+            )
         else:
-            msg_box.setStyleSheet("QMessageBox { background-color: #FFFFFF; } QLabel { color: #111827; } QPushButton { background-color: #2563EB; color: white; border-radius: 4px; padding: 6px 16px; }")
+            msg_box.setStyleSheet(
+                "QMessageBox { background-color: #FFFFFF; }"
+                "QLabel { color: #111827; }"
+                "QPushButton { background-color: #2563EB; color: white; border-radius: 4px; padding: 6px 16px; }"
+            )
 
 
 if __name__ == '__main__':
