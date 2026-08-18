@@ -3,227 +3,286 @@ import os
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, 
     QLabel, QLineEdit, QPushButton, QFileDialog, QMessageBox, QFrame,
-    QGraphicsDropShadowEffect
+    QGraphicsDropShadowEffect, QSpacerItem, QSizePolicy
 )
 from PyQt6.QtCore import Qt, QProcess
 from PyQt6.QtGui import QCursor, QColor
 
+# Professional Light Theme QSS
 LIGHT_THEME = """
     QWidget {
-        background-color: #fafaf9;
-        color: #1c1917;
-        font-family: 'Segoe UI', system-ui, sans-serif;
+        background-color: #F9FAFB;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    QLabel {
+        background: transparent;
+        color: #111827;
     }
     QLabel#headerTitle {
-        font-size: 26px;
+        font-size: 28px;
         font-weight: 800;
-        color: #0f172a;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
     }
     QLabel#subtitleLabel {
-        font-size: 13px;
-        color: #64748b;
+        font-size: 14px;
+        color: #6B7280;
     }
     QLabel#fieldLabel {
         font-size: 12px;
         font-weight: 700;
-        color: #475569;
-        letter-spacing: 1px;
+        color: #374151;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+    }
+    QLabel#statusLabel {
+        font-size: 13px;
+        color: #6B7280;
+        font-weight: 500;
+        margin-top: 8px;
     }
     QFrame#mainCard {
-        background-color: #ffffff;
-        border-radius: 16px;
-        border: 1px solid #e2e8f0;
+        background-color: #FFFFFF;
+        border-radius: 12px;
+        border: 1px solid #E5E7EB;
     }
     QLineEdit {
-        background-color: #f8fafc;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        padding: 12px;
-        color: #0f172a;
+        background-color: #F3F4F6;
+        border: 1px solid #D1D5DB;
+        border-radius: 6px;
+        padding: 8px 12px;
+        color: #111827;
         font-size: 14px;
+        min-height: 22px;
     }
     QLineEdit:focus {
-        border: 2px solid #3b82f6;
-        background-color: #ffffff;
+        border: 2px solid #2563EB;
+        background-color: #FFFFFF;
+        padding: 7px 11px; /* Adjust for border width */
+    }
+    QPushButton {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     QPushButton#primaryBtn {
-        background-color: #0f172a;
-        color: white;
-        border-radius: 10px;
-        padding: 14px;
+        background-color: #2563EB;
+        color: #FFFFFF;
+        border-radius: 6px;
+        padding: 12px;
         font-size: 15px;
-        font-weight: bold;
+        font-weight: 600;
+        border: none;
     }
     QPushButton#primaryBtn:hover {
-        background-color: #1e293b;
+        background-color: #1D4ED8;
     }
     QPushButton#primaryBtn:disabled {
-        background-color: #94a3b8;
+        background-color: #9CA3AF;
+        color: #F3F4F6;
     }
     QPushButton#secondaryBtn {
-        background-color: #f1f5f9;
-        color: #0f172a;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        padding: 10px 20px;
-        font-weight: bold;
+        background-color: #FFFFFF;
+        color: #374151;
+        border: 1px solid #D1D5DB;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        min-height: 22px;
     }
     QPushButton#secondaryBtn:hover {
-        background-color: #e2e8f0;
+        background-color: #F3F4F6;
+        color: #111827;
     }
     QPushButton#themeBtn {
         background-color: transparent;
-        color: #0f172a;
+        color: #4B5563;
         font-size: 13px;
-        font-weight: bold;
-        border-radius: 8px;
-        border: 1px solid #cbd5e1;
+        font-weight: 600;
+        border-radius: 6px;
+        border: 1px solid #D1D5DB;
         padding: 6px 12px;
     }
     QPushButton#themeBtn:hover {
-        background-color: #e2e8f0;
+        background-color: #E5E7EB;
+        color: #111827;
     }
 """
 
+# Professional Dark Theme QSS
 DARK_THEME = """
     QWidget {
-        background-color: #0f172a;
-        color: #f8fafc;
-        font-family: 'Segoe UI', system-ui, sans-serif;
+        background-color: #111827;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    QLabel {
+        background: transparent;
+        color: #F9FAFB;
     }
     QLabel#headerTitle {
-        font-size: 26px;
+        font-size: 28px;
         font-weight: 800;
-        color: #f8fafc;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
     }
     QLabel#subtitleLabel {
-        font-size: 13px;
-        color: #94a3b8;
+        font-size: 14px;
+        color: #9CA3AF;
     }
     QLabel#fieldLabel {
         font-size: 12px;
         font-weight: 700;
-        color: #cbd5e1;
-        letter-spacing: 1px;
+        color: #D1D5DB;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+    }
+    QLabel#statusLabel {
+        font-size: 13px;
+        color: #9CA3AF;
+        font-weight: 500;
+        margin-top: 8px;
     }
     QFrame#mainCard {
-        background-color: #1e293b;
-        border-radius: 16px;
-        border: 1px solid #334155;
+        background-color: #1F2937;
+        border-radius: 12px;
+        border: 1px solid #374151;
     }
     QLineEdit {
-        background-color: #0f172a;
-        border: 1px solid #475569;
-        border-radius: 8px;
-        padding: 12px;
-        color: #f8fafc;
+        background-color: #111827;
+        border: 1px solid #4B5563;
+        border-radius: 6px;
+        padding: 8px 12px;
+        color: #F9FAFB;
         font-size: 14px;
+        min-height: 22px;
     }
     QLineEdit:focus {
-        border: 2px solid #3b82f6;
+        border: 2px solid #3B82F6;
+        padding: 7px 11px; /* Adjust for border width */
+    }
+    QPushButton {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     QPushButton#primaryBtn {
-        background-color: #3b82f6;
-        color: white;
-        border-radius: 10px;
-        padding: 14px;
+        background-color: #2563EB;
+        color: #FFFFFF;
+        border-radius: 6px;
+        padding: 12px;
         font-size: 15px;
-        font-weight: bold;
+        font-weight: 600;
+        border: none;
     }
     QPushButton#primaryBtn:hover {
-        background-color: #2563eb;
+        background-color: #3B82F6;
     }
     QPushButton#primaryBtn:disabled {
-        background-color: #475569;
-        color: #94a3b8;
+        background-color: #4B5563;
+        color: #9CA3AF;
     }
     QPushButton#secondaryBtn {
-        background-color: #334155;
-        color: #f8fafc;
-        border: 1px solid #475569;
-        border-radius: 8px;
-        padding: 10px 20px;
-        font-weight: bold;
+        background-color: #374151;
+        color: #F9FAFB;
+        border: 1px solid #4B5563;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        min-height: 22px;
     }
     QPushButton#secondaryBtn:hover {
-        background-color: #475569;
+        background-color: #4B5563;
+        border-color: #6B7280;
     }
     QPushButton#themeBtn {
         background-color: transparent;
-        color: #f8fafc;
+        color: #D1D5DB;
         font-size: 13px;
-        font-weight: bold;
-        border-radius: 8px;
-        border: 1px solid #475569;
+        font-weight: 600;
+        border-radius: 6px;
+        border: 1px solid #4B5563;
         padding: 6px 12px;
     }
     QPushButton#themeBtn:hover {
-        background-color: #334155;
+        background-color: #374151;
+        color: #FFFFFF;
     }
 """
 
 class OpenModelicaRunnerApp(QWidget):
-    def __init__(self):
+    """
+    A PyQt6 Desktop Application to run OpenModelica executables.
+    Features dark/light mode, robust error handling, and PEP8 compliance.
+    """
+
+    def __init__(self) -> None:
+        """Initialize the application state and UI components."""
         super().__init__()
-        self.is_dark_mode = False
+        self.is_dark_mode = True
+        self.process = None
         self.init_ui()
 
-    def init_ui(self):
+    def init_ui(self) -> None:
+        """Construct the UI layout and widgets."""
         self.setWindowTitle("OpenModelica Simulation Runner")
-        self.setMinimumSize(750, 550)
+        self.setMinimumSize(800, 600)
         
         main_layout = QVBoxLayout(self)
-        main_layout.setContentsMargins(40, 30, 40, 40)
-        main_layout.setSpacing(30)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
         
-        # --- Header with Theme Toggle ---
-        header_layout = QHBoxLayout()
+        # --- Top Bar (Header) ---
+        top_bar = QWidget()
+        top_bar_layout = QHBoxLayout(top_bar)
+        top_bar_layout.setContentsMargins(40, 30, 40, 20)
         
         titles_layout = QVBoxLayout()
-        title = QLabel("OPENMODELICA SIMULATION")
+        titles_layout.setSpacing(4)
+        title = QLabel("OpenModelica Runner")
         title.setObjectName("headerTitle")
-        subtitle = QLabel("Configure your OpenModelica executable parameters below.")
+        subtitle = QLabel("Configure and execute your compiled simulation models")
         subtitle.setObjectName("subtitleLabel")
         titles_layout.addWidget(title)
         titles_layout.addWidget(subtitle)
         
-        self.theme_btn = QPushButton("Dark Mode")
+        self.theme_btn = QPushButton("Toggle Light Mode")
         self.theme_btn.setObjectName("themeBtn")
         self.theme_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.theme_btn.clicked.connect(self.toggle_theme)
         
-        header_layout.addLayout(titles_layout)
-        header_layout.addStretch()
-        header_layout.addWidget(self.theme_btn)
+        top_bar_layout.addLayout(titles_layout)
+        top_bar_layout.addStretch()
+        top_bar_layout.addWidget(self.theme_btn, alignment=Qt.AlignmentFlag.AlignTop)
         
-        main_layout.addLayout(header_layout)
+        main_layout.addWidget(top_bar)
 
-        # --- Main Card ---
+        # --- Content Area ---
+        content_area = QWidget()
+        content_layout = QVBoxLayout(content_area)
+        content_layout.setContentsMargins(40, 10, 40, 40)
+        
+        # Card Container
         card = QFrame()
         card.setObjectName("mainCard")
         
-        # Shadow
+        # Drop Shadow for Card
         self.shadow = QGraphicsDropShadowEffect(self)
-        self.shadow.setBlurRadius(30)
-        self.shadow.setColor(QColor(0, 0, 0, 15))
-        self.shadow.setOffset(0, 10)
+        self.shadow.setBlurRadius(20)
+        self.shadow.setOffset(0, 4)
         card.setGraphicsEffect(self.shadow)
 
         card_layout = QVBoxLayout(card)
-        card_layout.setContentsMargins(40, 40, 40, 40)
+        card_layout.setContentsMargins(35, 35, 35, 35)
         card_layout.setSpacing(25)
 
-        # 1. Executable Input
-        exe_label = QLabel("EXECUTABLE PATH")
+        # 1. Executable Input Group
+        exe_group = QVBoxLayout()
+        exe_group.setSpacing(8)
+        exe_label = QLabel("Executable Path")
         exe_label.setObjectName("fieldLabel")
-        card_layout.addWidget(exe_label)
         
-        exe_layout = QHBoxLayout()
-        exe_layout.setSpacing(15)
+        exe_input_layout = QHBoxLayout()
+        exe_input_layout.setSpacing(12)
         self.exe_path_input = QLineEdit()
-        self.exe_path_input.setPlaceholderText("Select the compiled OpenModelica binary...")
+        self.exe_path_input.setPlaceholderText("Select your OpenModelica binary file...")
         self.exe_path_input.textChanged.connect(self.check_ready_state)
         
         browse_btn = QPushButton("Browse")
@@ -231,28 +290,33 @@ class OpenModelicaRunnerApp(QWidget):
         browse_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         browse_btn.clicked.connect(self.browse_executable)
         
-        exe_layout.addWidget(self.exe_path_input)
-        exe_layout.addWidget(browse_btn)
-        card_layout.addLayout(exe_layout)
+        exe_input_layout.addWidget(self.exe_path_input)
+        exe_input_layout.addWidget(browse_btn)
+        
+        exe_group.addWidget(exe_label)
+        exe_group.addLayout(exe_input_layout)
+        card_layout.addLayout(exe_group)
 
-        # 2. Time Inputs
+        # 2. Time Inputs Group
         time_layout = QHBoxLayout()
-        time_layout.setSpacing(20)
+        time_layout.setSpacing(25)
 
         start_col = QVBoxLayout()
-        start_label = QLabel("START TIME")
+        start_col.setSpacing(8)
+        start_label = QLabel("Start Time")
         start_label.setObjectName("fieldLabel")
         self.start_time_input = QLineEdit()
-        self.start_time_input.setPlaceholderText("e.g. 0")
+        self.start_time_input.setPlaceholderText("e.g., 0")
         self.start_time_input.textChanged.connect(self.check_ready_state)
         start_col.addWidget(start_label)
         start_col.addWidget(self.start_time_input)
         
         stop_col = QVBoxLayout()
-        stop_label = QLabel("STOP TIME")
+        stop_col.setSpacing(8)
+        stop_label = QLabel("Stop Time")
         stop_label.setObjectName("fieldLabel")
         self.stop_time_input = QLineEdit()
-        self.stop_time_input.setPlaceholderText("e.g. 4")
+        self.stop_time_input.setPlaceholderText("e.g., 4")
         self.stop_time_input.textChanged.connect(self.check_ready_state)
         stop_col.addWidget(stop_label)
         stop_col.addWidget(self.stop_time_input)
@@ -260,6 +324,9 @@ class OpenModelicaRunnerApp(QWidget):
         time_layout.addLayout(start_col)
         time_layout.addLayout(stop_col)
         card_layout.addLayout(time_layout)
+
+        # Spacer before button
+        card_layout.addSpacerItem(QSpacerItem(20, 10, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed))
 
         # 3. Action Button
         self.run_btn = QPushButton("Initialize Simulation")
@@ -271,47 +338,51 @@ class OpenModelicaRunnerApp(QWidget):
         
         # 4. Status Label
         self.status_label = QLabel("Awaiting input parameters...")
+        self.status_label.setObjectName("statusLabel")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         card_layout.addWidget(self.status_label)
 
-        main_layout.addWidget(card)
-        main_layout.addStretch()
+        content_layout.addWidget(card)
+        content_layout.addStretch()
+        main_layout.addWidget(content_area)
 
+        # Apply initial theme
         self.apply_theme()
 
-    def toggle_theme(self):
+    def toggle_theme(self) -> None:
+        """Switch between dark and light themes."""
         self.is_dark_mode = not self.is_dark_mode
         self.apply_theme()
 
-    def apply_theme(self):
+    def apply_theme(self) -> None:
+        """Apply the CSS stylesheet corresponding to the current theme state."""
         if self.is_dark_mode:
             self.setStyleSheet(DARK_THEME)
-            self.theme_btn.setText("Light Mode")
-            self.shadow.setColor(QColor(0, 0, 0, 50))
-            # Fix dynamic status colors for dark mode
-            if "completed successfully" in self.status_label.text():
-                self.status_label.setStyleSheet("color: #10b981;") # emerald-500
-            elif "failed" in self.status_label.text():
-                self.status_label.setStyleSheet("color: #ef4444;") # red-500
-            elif "Running" in self.status_label.text():
-                self.status_label.setStyleSheet("color: #3b82f6;") # blue-500
-            else:
-                self.status_label.setStyleSheet("color: #94a3b8;") # slate-400
+            self.theme_btn.setText("Switch to Light Mode")
+            self.shadow.setColor(QColor(0, 0, 0, 40))
         else:
             self.setStyleSheet(LIGHT_THEME)
-            self.theme_btn.setText("Dark Mode")
+            self.theme_btn.setText("Switch to Dark Mode")
             self.shadow.setColor(QColor(0, 0, 0, 15))
-            # Fix dynamic status colors for light mode
-            if "completed successfully" in self.status_label.text():
-                self.status_label.setStyleSheet("color: #10b981;")
-            elif "failed" in self.status_label.text():
-                self.status_label.setStyleSheet("color: #ef4444;")
-            elif "Running" in self.status_label.text():
-                self.status_label.setStyleSheet("color: #3b82f6;")
-            else:
-                self.status_label.setStyleSheet("color: #64748b;") # slate-500
+            
+        self.update_status_color()
 
-    def check_ready_state(self):
+    def update_status_color(self) -> None:
+        """Update the status label color based on its text and current theme."""
+        text = self.status_label.text()
+        if "completed successfully" in text:
+            color = "#10B981" # Emerald
+        elif "failed" in text or "Error" in text:
+            color = "#EF4444" # Red
+        elif "Running" in text:
+            color = "#3B82F6" # Blue
+        else:
+            color = "#9CA3AF" if self.is_dark_mode else "#6B7280" # Gray
+            
+        self.status_label.setStyleSheet(f"color: {color};")
+
+    def check_ready_state(self) -> None:
+        """Enable the run button only if all required inputs are populated."""
         is_ready = bool(
             self.exe_path_input.text().strip() and 
             self.start_time_input.text().strip() and 
@@ -322,9 +393,10 @@ class OpenModelicaRunnerApp(QWidget):
             self.status_label.setText("Ready to launch.")
         else:
             self.status_label.setText("Awaiting input parameters...")
-        self.apply_theme() # refresh label color
+        self.update_status_color()
 
-    def browse_executable(self):
+    def browse_executable(self) -> None:
+        """Open a file dialog to select the OpenModelica binary."""
         file_filter = "All Files (*);;Executable Files (*.exe)"
         file_path, _ = QFileDialog.getOpenFileName(
             self, "Select OpenModelica Executable", "", file_filter
@@ -332,12 +404,13 @@ class OpenModelicaRunnerApp(QWidget):
         if file_path:
             self.exe_path_input.setText(file_path)
 
-    def validate_and_run(self):
+    def validate_and_run(self) -> None:
+        """Validate inputs based on FOSSEE criteria and trigger execution."""
+        exe_path = self.exe_path_input.text().strip()
         start_str = self.start_time_input.text().strip()
         stop_str = self.stop_time_input.text().strip()
-        exe_path = self.exe_path_input.text().strip()
 
-        if not os.path.exists(exe_path):
+        if not os.path.isfile(exe_path):
             self.show_error_message("File Error", "The selected executable file does not exist.")
             return
 
@@ -352,35 +425,48 @@ class OpenModelicaRunnerApp(QWidget):
             self.show_error_message("Validation Error", "Please ensure the test condition is met:\n0 <= start time < stop time < 5")
             return
 
-        # Hint specified -override
+        self.run_executable(exe_path, start_time, stop_time)
+
+    def run_executable(self, exe_path: str, start_time: int, stop_time: int) -> None:
+        """
+        Execute the compiled binary with QProcess to prevent UI blocking.
+        
+        Args:
+            exe_path (str): Absolute path to the OpenModelica binary.
+            start_time (int): Simulation start time.
+            stop_time (int): Simulation stop time.
+        """
+        # Using the hint specified -override flag
         args = ["-override", f"startTime={start_time},stopTime={stop_time}"]
 
         self.run_btn.setEnabled(False)
         self.run_btn.setText("Executing Sequence...")
         self.status_label.setText("Running OpenModelica simulation...")
-        self.apply_theme() # Refresh dynamic color
+        self.update_status_color()
 
         self.process = QProcess(self)
         self.process.finished.connect(self.on_process_finished)
         self.process.errorOccurred.connect(self.on_process_error)
         self.process.start(exe_path, args)
 
-    def on_process_finished(self, exit_code, exit_status):
+    def on_process_finished(self, exit_code: int, exit_status: QProcess.ExitStatus) -> None:
+        """Handle process completion, capturing stdout/stderr."""
         self.run_btn.setEnabled(True)
         self.run_btn.setText("Initialize Simulation")
 
         if exit_code == 0 and exit_status == QProcess.ExitStatus.NormalExit:
             self.status_label.setText("Simulation completed successfully.")
-            self.apply_theme()
+            self.update_status_color()
             
             stdout = self.process.readAllStandardOutput().data().decode().strip()
             msg = "Simulation finished successfully."
             if stdout:
                 msg += f"\n\n--- Executable Output ---\n{stdout}"
-            QMessageBox.information(self, "Success", msg)
+            
+            self.show_success_message("Success", msg)
         else:
             self.status_label.setText(f"Process failed (Exit: {exit_code}).")
-            self.apply_theme()
+            self.update_status_color()
             
             stderr = self.process.readAllStandardError().data().decode().strip()
             stdout = self.process.readAllStandardOutput().data().decode().strip()
@@ -393,21 +479,39 @@ class OpenModelicaRunnerApp(QWidget):
                 
             self.show_error_message("Execution Error", err_msg)
 
-    def on_process_error(self, error):
+    def on_process_error(self, error: QProcess.ProcessError) -> None:
+        """Handle failure to launch the executable."""
         self.run_btn.setEnabled(True)
         self.run_btn.setText("Initialize Simulation")
         self.status_label.setText("Launch failed.")
-        self.apply_theme()
+        self.update_status_color()
+        
         self.show_error_message("Process Error", f"Failed to start: {self.process.errorString()}")
 
-    def show_error_message(self, title, message):
+    def show_error_message(self, title: str, message: str) -> None:
+        """Display a styled critical error dialog."""
         msg_box = QMessageBox(self)
-        if self.is_dark_mode:
-            msg_box.setStyleSheet("background-color: #1e293b; color: #f8fafc;")
+        self._style_msg_box(msg_box)
         msg_box.setIcon(QMessageBox.Icon.Critical)
         msg_box.setWindowTitle(title)
         msg_box.setText(message)
         msg_box.exec()
+        
+    def show_success_message(self, title: str, message: str) -> None:
+        """Display a styled information dialog."""
+        msg_box = QMessageBox(self)
+        self._style_msg_box(msg_box)
+        msg_box.setIcon(QMessageBox.Icon.Information)
+        msg_box.setWindowTitle(title)
+        msg_box.setText(message)
+        msg_box.exec()
+        
+    def _style_msg_box(self, msg_box: QMessageBox) -> None:
+        """Helper to style message boxes according to current theme."""
+        if self.is_dark_mode:
+            msg_box.setStyleSheet("QMessageBox { background-color: #1F2937; } QLabel { color: #F9FAFB; } QPushButton { background-color: #2563EB; color: white; border-radius: 4px; padding: 6px 16px; }")
+        else:
+            msg_box.setStyleSheet("QMessageBox { background-color: #FFFFFF; } QLabel { color: #111827; } QPushButton { background-color: #2563EB; color: white; border-radius: 4px; padding: 6px 16px; }")
 
 
 if __name__ == '__main__':
