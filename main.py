@@ -1,5 +1,7 @@
 import sys
 import os
+import platform
+import shutil
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, 
     QLabel, QLineEdit, QPushButton, QFileDialog, QMessageBox, QFrame,
@@ -434,6 +436,9 @@ class OpenModelicaRunnerApp(QWidget):
     def run_executable(self, exe_path: str, start_time: int, stop_time: int) -> None:
         """
         Execute the compiled binary with QProcess to prevent UI blocking.
+        Automatically detects the OS and runs accordingly:
+        - Linux/macOS: Executes the binary directly via shell.
+        - Windows: Routes the binary through WSL for Unix compatibility.
         
         Args:
             exe_path (str): Absolute path to the OpenModelica binary.
@@ -441,17 +446,31 @@ class OpenModelicaRunnerApp(QWidget):
             stop_time (int): Simulation stop time.
         """
         # Using the hint specified -override flag
-        args = ["-override", f"startTime={start_time},stopTime={stop_time}"]
+        sim_args = ["-override", f"startTime={start_time},stopTime={stop_time}"]
+
+        current_os = platform.system()
+
+        if current_os == "Windows":
+            # Windows: Run the Linux ELF binary through WSL
+            program = "wsl"
+            args = [exe_path] + sim_args
+        else:
+            # Linux / macOS: Run the binary directly
+            # Ensure the binary has execute permissions
+            if not os.access(exe_path, os.X_OK):
+                os.chmod(exe_path, 0o755)
+            program = exe_path
+            args = sim_args
 
         self.run_btn.setEnabled(False)
         self.run_btn.setText("Executing Sequence...")
-        self.status_label.setText("Running OpenModelica simulation...")
+        self.status_label.setText(f"Running on {current_os}...")
         self.update_status_color()
 
         self.process = QProcess(self)
         self.process.finished.connect(self.on_process_finished)
         self.process.errorOccurred.connect(self.on_process_error)
-        self.process.start(exe_path, args)
+        self.process.start(program, args)
 
     def on_process_finished(self, exit_code: int, exit_status: QProcess.ExitStatus) -> None:
         """Handle process completion, capturing stdout/stderr."""
