@@ -9,11 +9,11 @@
 
   OPENMODELICAHOME                    = "/usr/bin/.."
 
-  guid                                = "{7ff1cb95-79c6-40e1-9b41-ce74574e6944}"
+  guid                                = "{6e5be696-0d77-424b-b1be-e26fea2284d7}"
 
   description                         = ""
-  generationTool                      = "OpenModelica Compiler OpenModelica 1.22.4"
-  generationDateAndTime               = "2026-08-17T18:02:56Z"
+  generationTool                      = "OpenModelica Compiler OpenModelica 1.28.0~dev-329-gd4585d5"
+  generationDateAndTime               = "2026-08-18T04:12:52Z"
 
   variableNamingConvention            = "structured"
 
@@ -50,9 +50,9 @@
     stopTime       = "1"
     stepSize       = "0.002"
     tolerance      = "1e-06"
-    solver        = "dassl"
-    outputFormat      = "mat"
-    variableFilter      = ".*" />
+    solver         = "dassl"
+    outputFormat   = "mat"
+    variableFilter = ".*" />
 
   <!-- variables in the model -->
   <ModelVariables>
@@ -64,8 +64,8 @@
     causality = "local" isValueChangeable = "true"
     alias = "noAlias"
     classIndex = "0" classType = "rSta"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/Tank.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "11" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/Tank.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "11" fileWritable = "true">
     <Real fixed="true" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -75,8 +75,8 @@
     causality = "local" isValueChangeable = "true"
     alias = "noAlias"
     classIndex = "1" classType = "rSta"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/Tank2.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "12" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/Tank2.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "12" fileWritable = "true">
     <Real fixed="true" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -86,8 +86,8 @@
     causality = "local" isValueChangeable = "false"
     alias = "noAlias"
     classIndex = "0" classType = "rDer"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/Tank.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "11" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/Tank.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "11" fileWritable = "true">
     <Real fixed="false" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -97,8 +97,8 @@
     causality = "local" isValueChangeable = "false"
     alias = "noAlias"
     classIndex = "1" classType = "rDer"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/Tank2.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "12" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/Tank2.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "12" fileWritable = "true">
     <Real fixed="false" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -108,8 +108,8 @@
     causality = "local" isValueChangeable = "false"
     alias = "noAlias"
     classIndex = "0" classType = "rAlg"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/Tank2.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "12" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/Tank2.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "12" fileWritable = "true">
     <Real start="0.0" fixed="false" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -119,8 +119,8 @@
     causality = "local" isValueChangeable = "false"
     alias = "noAlias"
     classIndex = "1" classType = "rAlg"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/Tank2.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "12" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/Tank2.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "12" fileWritable = "true">
     <Real fixed="false" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -130,8 +130,8 @@
     causality = "parameter" isValueChangeable = "true"
     alias = "noAlias"
     classIndex = "0" classType = "rPar"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/Tank.mo" startLine = "4" startColumn = "1" endLine = "4" endColumn = "29" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/Tank.mo" startLine = "4" startColumn = "1" endLine = "4" endColumn = "29" fileWritable = "true">
     <Real start="1.0" fixed="true" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -141,8 +141,8 @@
     causality = "parameter" isValueChangeable = "true"
     alias = "noAlias"
     classIndex = "1" classType = "rPar"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/Tank.mo" startLine = "4" startColumn = "1" endLine = "4" endColumn = "29" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/Tank.mo" startLine = "4" startColumn = "1" endLine = "4" endColumn = "29" fileWritable = "true">
     <Real start="2.0" fixed="true" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -152,8 +152,8 @@
     causality = "parameter" isValueChangeable = "true"
     alias = "noAlias"
     classIndex = "2" classType = "rPar"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/Tank2.mo" startLine = "4" startColumn = "1" endLine = "4" endColumn = "27" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/Tank2.mo" startLine = "4" startColumn = "1" endLine = "4" endColumn = "27" fileWritable = "true">
     <Real start="1.0" fixed="true" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -163,8 +163,8 @@
     causality = "parameter" isValueChangeable = "true"
     alias = "noAlias"
     classIndex = "3" classType = "rPar"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/Tank2.mo" startLine = "4" startColumn = "1" endLine = "4" endColumn = "27" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/Tank2.mo" startLine = "4" startColumn = "1" endLine = "4" endColumn = "27" fileWritable = "true">
     <Real start="10.0" fixed="true" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -174,8 +174,8 @@
     causality = "local" isValueChangeable = "false"
     alias = "alias" aliasVariable="tank2.Q1" aliasVariableId="4"
     classIndex = "0" classType = "rAli"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/Tank.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "11" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/Tank.mo" startLine = "5" startColumn = "1" endLine = "5" endColumn = "11" fileWritable = "true">
     <Real fixed="false" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -185,8 +185,8 @@
     causality = "local" isValueChangeable = "false"
     alias = "alias" aliasVariable="tank2.Q1" aliasVariableId="4"
     classIndex = "1" classType = "rAli"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/FlowConnect.mo" startLine = "4" startColumn = "3" endLine = "4" endColumn = "9" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/FlowConnect.mo" startLine = "4" startColumn = "3" endLine = "4" endColumn = "9" fileWritable = "true">
     <Real fixed="false" useNominal="false" />
   </ScalarVariable>
   <ScalarVariable
@@ -196,8 +196,8 @@
     causality = "local" isValueChangeable = "false"
     alias = "alias" aliasVariable="tank2.Q1" aliasVariableId="4"
     classIndex = "2" classType = "rAli"
-    isProtected = "false" hideResult = "" initNonlinear = "false"
-    fileName = "/workspace/NonInteractingTanks/FlowConnect.mo" startLine = "4" startColumn = "3" endLine = "4" endColumn = "9" fileWritable = "true">
+    isProtected = "false" hideResult = "" isEncrypted = "false" initNonlinear = "false"
+    fileName = "/mnt/d/OpenModelica_Models/NonInteractingTanks/FlowConnect.mo" startLine = "4" startColumn = "3" endLine = "4" endColumn = "9" fileWritable = "true">
     <Real fixed="false" useNominal="false" />
   </ScalarVariable>
 
