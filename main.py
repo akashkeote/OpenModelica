@@ -364,10 +364,11 @@ class OpenModelicaRunnerApp(QWidget):
         
         # Zoom ComboBox
         zoom_label = QLabel("Zoom:")
-        zoom_label.setStyleSheet("font-size: 13px; font-weight: 600;")
+        zoom_label.setObjectName("fieldLabel")
         
         self.zoom_combo = QComboBox()
         self.zoom_combo.setObjectName("zoomBox")
+        self.zoom_combo.setMinimumWidth(80)
         self.zoom_combo.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         for z in range(100, 205, 5):
             self.zoom_combo.addItem(f"{z}%", z / 100.0)
