@@ -9,15 +9,15 @@
 
   OPENMODELICAHOME                    = "/usr/bin/.."
 
-  guid                                = "{6e5be696-0d77-424b-b1be-e26fea2284d7}"
+  guid                                = "{2f6d3858-f46d-4a6d-90a3-82f24aad0469}"
 
   description                         = ""
   generationTool                      = "OpenModelica Compiler OpenModelica 1.28.0~dev-329-gd4585d5"
-  generationDateAndTime               = "2026-08-18T04:12:52Z"
+  generationDateAndTime               = "2026-08-18T04:26:37Z"
 
   variableNamingConvention            = "structured"
 
-  numberOfEventIndicators             = "1"  cmt_numberOfEventIndicators             = "NG:       number of zero crossings,                           FMI"
+  numberOfEventIndicators             = "2"  cmt_numberOfEventIndicators             = "NG:       number of zero crossings,                           FMI"
   numberOfTimeEvents                  = "0"  cmt_numberOfTimeEvents                  = "NG_SAM:   number of zero crossings that are samples,          OMC"
 
   numberOfInputVariables              = "0"  cmt_numberOfInputVariables              = "NI:       number of inputvar on topmodel,                     OMC"
