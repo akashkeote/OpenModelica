@@ -49,15 +49,15 @@ def get_light_theme(scale: float = 1.0) -> str:
     }}
     QFrame#mainCard {{
         background-color: #FFFFFF;
-        border-radius: {s(12)}px;
+        border-radius: {s(16)}px;
         border: 1px solid #E5E7EB;
     }}
     QLineEdit {{
         background-color: #F3F4F6;
         border: 1px solid #D1D5DB;
-        border-radius: {s(6)}px;
+        border-radius: {s(8)}px;
         padding: 0px {s(15)}px;
-        min-height: {s(45)}px;
+        min-height: {s(50)}px;
         color: #111827;
         font-size: {s(14)}px;
     }}
@@ -70,17 +70,17 @@ def get_light_theme(scale: float = 1.0) -> str:
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }}
     QPushButton#primaryBtn {{
-        background-color: #2563EB;
+        background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #3B82F6, stop:1 #1D4ED8);
         color: #FFFFFF;
-        border-radius: {s(6)}px;
+        border-radius: {s(8)}px;
         padding: 0px {s(20)}px;
-        min-height: {s(45)}px;
+        min-height: {s(50)}px;
         font-size: {s(15)}px;
-        font-weight: 600;
+        font-weight: 700;
         border: none;
     }}
     QPushButton#primaryBtn:hover {{
-        background-color: #1D4ED8;
+        background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #60A5FA, stop:1 #2563EB);
     }}
     QPushButton#primaryBtn:disabled {{
         background-color: #9CA3AF;
@@ -90,9 +90,9 @@ def get_light_theme(scale: float = 1.0) -> str:
         background-color: #FFFFFF;
         color: #374151;
         border: 1px solid #D1D5DB;
-        border-radius: {s(6)}px;
+        border-radius: {s(8)}px;
         padding: 0px {s(20)}px;
-        min-height: {s(45)}px;
+        min-height: {s(50)}px;
         font-size: {s(13)}px;
         font-weight: 600;
     }}
@@ -105,7 +105,7 @@ def get_light_theme(scale: float = 1.0) -> str:
         color: #4B5563;
         font-size: {s(13)}px;
         font-weight: 600;
-        border-radius: {s(6)}px;
+        border-radius: {s(8)}px;
         border: 1px solid #D1D5DB;
         padding: {s(6)}px {s(12)}px;
         min-height: {s(30)}px;
@@ -175,17 +175,17 @@ def get_dark_theme(scale: float = 1.0) -> str:
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }}
     QPushButton#primaryBtn {{
-        background-color: #2563EB;
+        background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #3B82F6, stop:1 #1D4ED8);
         color: #FFFFFF;
-        border-radius: {s(6)}px;
+        border-radius: {s(8)}px;
         padding: 0px {s(20)}px;
-        min-height: {s(45)}px;
+        min-height: {s(50)}px;
         font-size: {s(15)}px;
-        font-weight: 600;
+        font-weight: 700;
         border: none;
     }}
     QPushButton#primaryBtn:hover {{
-        background-color: #3B82F6;
+        background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #60A5FA, stop:1 #2563EB);
     }}
     QPushButton#primaryBtn:disabled {{
         background-color: #4B5563;
@@ -195,9 +195,9 @@ def get_dark_theme(scale: float = 1.0) -> str:
         background-color: #374151;
         color: #F9FAFB;
         border: 1px solid #4B5563;
-        border-radius: {s(6)}px;
+        border-radius: {s(8)}px;
         padding: 0px {s(20)}px;
-        min-height: {s(45)}px;
+        min-height: {s(50)}px;
         font-size: {s(13)}px;
         font-weight: 600;
     }}
@@ -210,7 +210,7 @@ def get_dark_theme(scale: float = 1.0) -> str:
         color: #D1D5DB;
         font-size: {s(13)}px;
         font-weight: 600;
-        border-radius: {s(6)}px;
+        border-radius: {s(8)}px;
         border: 1px solid #4B5563;
         padding: {s(6)}px {s(12)}px;
         min-height: {s(30)}px;
@@ -349,7 +349,7 @@ class OpenModelicaRunnerApp(QWidget):
         self.zoom_in_btn.clicked.connect(self.zoom_in)
         
         # Theme Toggle
-        self.theme_btn = QPushButton("Switch to Light Mode")
+        self.theme_btn = QPushButton("☀️ Light Mode")
         self.theme_btn.setObjectName("themeBtn")
         self.theme_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.theme_btn.clicked.connect(self.toggle_theme)
@@ -396,7 +396,7 @@ class OpenModelicaRunnerApp(QWidget):
         self.exe_path_input.setPlaceholderText("Select your OpenModelica binary file...")
         self.exe_path_input.textChanged.connect(self.check_ready_state)
         
-        browse_btn = QPushButton("Browse")
+        browse_btn = QPushButton("📁 Browse")
         browse_btn.setObjectName("secondaryBtn")
         browse_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         browse_btn.clicked.connect(self.browse_executable)
@@ -440,7 +440,7 @@ class OpenModelicaRunnerApp(QWidget):
         card_layout.addSpacerItem(QSpacerItem(20, 10, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed))
 
         # 3. Action Button
-        self.run_btn = QPushButton("Initialize Simulation")
+        self.run_btn = QPushButton("🚀 Run Simulation")
         self.run_btn.setObjectName("primaryBtn")
         self.run_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.run_btn.setEnabled(False)
@@ -488,11 +488,11 @@ class OpenModelicaRunnerApp(QWidget):
         """Apply the CSS stylesheet corresponding to the current theme and zoom level."""
         if self.is_dark_mode:
             self.setStyleSheet(get_dark_theme(self.scale_factor))
-            self.theme_btn.setText("Switch to Light Mode")
+            self.theme_btn.setText("☀️ Light Mode")
             self.shadow.setColor(QColor(0, 0, 0, 40))
         else:
             self.setStyleSheet(get_light_theme(self.scale_factor))
-            self.theme_btn.setText("Switch to Dark Mode")
+            self.theme_btn.setText("🌙 Dark Mode")
             self.shadow.setColor(QColor(0, 0, 0, 15))
             
         self.update_status_color()
@@ -500,16 +500,24 @@ class OpenModelicaRunnerApp(QWidget):
     def update_status_color(self) -> None:
         """Update the status label color based on its text and current theme."""
         text = self.status_label.text()
+        
         if "completed successfully" in text:
-            color = "#10B981"
+            bg_color = "#065F46" if self.is_dark_mode else "#D1FAE5"
+            text_color = "#34D399" if self.is_dark_mode else "#065F46"
         elif "failed" in text or "Error" in text:
-            color = "#EF4444"
-        elif "Running" in text:
-            color = "#3B82F6"
+            bg_color = "#7F1D1D" if self.is_dark_mode else "#FEE2E2"
+            text_color = "#F87171" if self.is_dark_mode else "#991B1B"
+        elif "Running" in text or "Executing" in text:
+            bg_color = "#1E3A8A" if self.is_dark_mode else "#DBEAFE"
+            text_color = "#60A5FA" if self.is_dark_mode else "#1E40AF"
         else:
-            color = "#9CA3AF" if self.is_dark_mode else "#6B7280"
+            bg_color = "#374151" if self.is_dark_mode else "#F3F4F6"
+            text_color = "#D1D5DB" if self.is_dark_mode else "#4B5563"
             
-        self.status_label.setStyleSheet(f"color: {color};")
+        self.status_label.setStyleSheet(
+            f"background-color: {bg_color}; color: {text_color}; "
+            f"padding: 6px 16px; border-radius: 14px; font-weight: 600;"
+        )
 
     # ── Input Handling ────────────────────────────────────────────
 
@@ -581,7 +589,7 @@ class OpenModelicaRunnerApp(QWidget):
             args = sim_args
 
         self.run_btn.setEnabled(False)
-        self.run_btn.setText("Executing Sequence...")
+        self.run_btn.setText("⏳ Executing Sequence...")
         self.status_label.setText(f"Running on {current_os}...")
         self.update_status_color()
 
@@ -595,7 +603,7 @@ class OpenModelicaRunnerApp(QWidget):
     def on_process_finished(self, exit_code: int, exit_status: QProcess.ExitStatus) -> None:
         """Handle process completion, capturing stdout/stderr."""
         self.run_btn.setEnabled(True)
-        self.run_btn.setText("Initialize Simulation")
+        self.run_btn.setText("🚀 Run Simulation")
 
         if exit_code == 0 and exit_status == QProcess.ExitStatus.NormalExit:
             self.status_label.setText("Simulation completed successfully.")
@@ -623,7 +631,7 @@ class OpenModelicaRunnerApp(QWidget):
     def on_process_error(self, error: QProcess.ProcessError) -> None:
         """Handle failure to launch the executable."""
         self.run_btn.setEnabled(True)
-        self.run_btn.setText("Initialize Simulation")
+        self.run_btn.setText("🚀 Run Simulation")
         self.status_label.setText("Launch failed.")
         self.update_status_color()
         self.show_error_message("Process Error", f"Failed to start: {self.process.errorString()}")
