@@ -50,15 +50,15 @@ LIGHT_THEME = """
         background-color: #F3F4F6;
         border: 1px solid #D1D5DB;
         border-radius: 6px;
-        padding: 8px 12px;
+        padding: 0px 15px;
+        min-height: 45px;
         color: #111827;
         font-size: 14px;
-        min-height: 22px;
     }
     QLineEdit:focus {
         border: 2px solid #2563EB;
         background-color: #FFFFFF;
-        padding: 7px 11px; /* Adjust for border width */
+        padding: 0px 14px;
     }
     QPushButton {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -67,7 +67,8 @@ LIGHT_THEME = """
         background-color: #2563EB;
         color: #FFFFFF;
         border-radius: 6px;
-        padding: 12px;
+        padding: 0px 20px;
+        min-height: 45px;
         font-size: 15px;
         font-weight: 600;
         border: none;
@@ -84,10 +85,10 @@ LIGHT_THEME = """
         color: #374151;
         border: 1px solid #D1D5DB;
         border-radius: 6px;
-        padding: 8px 16px;
+        padding: 0px 20px;
+        min-height: 45px;
         font-size: 13px;
         font-weight: 600;
-        min-height: 22px;
     }
     QPushButton#secondaryBtn:hover {
         background-color: #F3F4F6;
@@ -101,6 +102,7 @@ LIGHT_THEME = """
         border-radius: 6px;
         border: 1px solid #D1D5DB;
         padding: 6px 12px;
+        min-height: 30px;
     }
     QPushButton#themeBtn:hover {
         background-color: #E5E7EB;
@@ -150,14 +152,14 @@ DARK_THEME = """
         background-color: #111827;
         border: 1px solid #4B5563;
         border-radius: 6px;
-        padding: 8px 12px;
+        padding: 0px 15px;
+        min-height: 45px;
         color: #F9FAFB;
         font-size: 14px;
-        min-height: 22px;
     }
     QLineEdit:focus {
         border: 2px solid #3B82F6;
-        padding: 7px 11px; /* Adjust for border width */
+        padding: 0px 14px;
     }
     QPushButton {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -166,7 +168,8 @@ DARK_THEME = """
         background-color: #2563EB;
         color: #FFFFFF;
         border-radius: 6px;
-        padding: 12px;
+        padding: 0px 20px;
+        min-height: 45px;
         font-size: 15px;
         font-weight: 600;
         border: none;
@@ -183,10 +186,10 @@ DARK_THEME = """
         color: #F9FAFB;
         border: 1px solid #4B5563;
         border-radius: 6px;
-        padding: 8px 16px;
+        padding: 0px 20px;
+        min-height: 45px;
         font-size: 13px;
         font-weight: 600;
-        min-height: 22px;
     }
     QPushButton#secondaryBtn:hover {
         background-color: #4B5563;
@@ -200,6 +203,7 @@ DARK_THEME = """
         border-radius: 6px;
         border: 1px solid #4B5563;
         padding: 6px 12px;
+        min-height: 30px;
     }
     QPushButton#themeBtn:hover {
         background-color: #374151;
