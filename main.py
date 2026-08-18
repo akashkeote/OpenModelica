@@ -211,6 +211,73 @@ DARK_THEME = """
         background-color: #374151;
         color: #FFFFFF;
     }
+
+    /* File Dialog Styling for Dark Mode */
+    QFileDialog {
+        background-color: #1F2937;
+        color: #F9FAFB;
+    }
+    QFileDialog QLabel {
+        color: #F9FAFB;
+    }
+    QFileDialog QLineEdit {
+        background-color: #111827;
+        color: #F9FAFB;
+        border: 1px solid #4B5563;
+        border-radius: 4px;
+        padding: 0px 8px;
+        min-height: 28px;
+    }
+    QFileDialog QPushButton {
+        background-color: #374151;
+        color: #F9FAFB;
+        border: 1px solid #4B5563;
+        border-radius: 4px;
+        padding: 4px 14px;
+        min-height: 26px;
+    }
+    QFileDialog QPushButton:hover {
+        background-color: #4B5563;
+    }
+    QFileDialog QComboBox {
+        background-color: #111827;
+        color: #F9FAFB;
+        border: 1px solid #4B5563;
+        border-radius: 4px;
+        padding: 4px 8px;
+        min-height: 26px;
+    }
+    QFileDialog QComboBox QAbstractItemView {
+        background-color: #1F2937;
+        color: #F9FAFB;
+        selection-background-color: #2563EB;
+    }
+    QFileDialog QTreeView, QFileDialog QListView {
+        background-color: #111827;
+        color: #F9FAFB;
+        border: 1px solid #4B5563;
+        selection-background-color: #2563EB;
+        selection-color: #FFFFFF;
+    }
+    QFileDialog QHeaderView::section {
+        background-color: #1F2937;
+        color: #D1D5DB;
+        border: 1px solid #374151;
+        padding: 4px;
+    }
+    QFileDialog QToolButton {
+        background-color: #374151;
+        color: #F9FAFB;
+        border: 1px solid #4B5563;
+        border-radius: 4px;
+        padding: 4px;
+    }
+    QFileDialog QToolButton:hover {
+        background-color: #4B5563;
+    }
+    QFileDialog QSplitter::handle {
+        background-color: #374151;
+    }
 """
 
 class OpenModelicaRunnerApp(QWidget):
