@@ -75,10 +75,11 @@ LIGHT_THEME = """
     QPushButton#themeBtn {
         background-color: transparent;
         color: #0f172a;
-        font-size: 20px;
+        font-size: 13px;
+        font-weight: bold;
         border-radius: 8px;
         border: 1px solid #cbd5e1;
-        padding: 4px 10px;
+        padding: 6px 12px;
     }
     QPushButton#themeBtn:hover {
         background-color: #e2e8f0;
@@ -152,10 +153,11 @@ DARK_THEME = """
     QPushButton#themeBtn {
         background-color: transparent;
         color: #f8fafc;
-        font-size: 20px;
+        font-size: 13px;
+        font-weight: bold;
         border-radius: 8px;
         border: 1px solid #475569;
-        padding: 4px 10px;
+        padding: 6px 12px;
     }
     QPushButton#themeBtn:hover {
         background-color: #334155;
@@ -187,7 +189,7 @@ class OpenModelicaRunnerApp(QWidget):
         titles_layout.addWidget(title)
         titles_layout.addWidget(subtitle)
         
-        self.theme_btn = QPushButton("🌙")
+        self.theme_btn = QPushButton("Dark Mode")
         self.theme_btn.setObjectName("themeBtn")
         self.theme_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.theme_btn.clicked.connect(self.toggle_theme)
@@ -284,7 +286,7 @@ class OpenModelicaRunnerApp(QWidget):
     def apply_theme(self):
         if self.is_dark_mode:
             self.setStyleSheet(DARK_THEME)
-            self.theme_btn.setText("☀️")
+            self.theme_btn.setText("Light Mode")
             self.shadow.setColor(QColor(0, 0, 0, 50))
             # Fix dynamic status colors for dark mode
             if "completed successfully" in self.status_label.text():
@@ -297,7 +299,7 @@ class OpenModelicaRunnerApp(QWidget):
                 self.status_label.setStyleSheet("color: #94a3b8;") # slate-400
         else:
             self.setStyleSheet(LIGHT_THEME)
-            self.theme_btn.setText("🌙")
+            self.theme_btn.setText("Dark Mode")
             self.shadow.setColor(QColor(0, 0, 0, 15))
             # Fix dynamic status colors for light mode
             if "completed successfully" in self.status_label.text():
